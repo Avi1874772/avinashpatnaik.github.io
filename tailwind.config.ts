@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -84,11 +85,90 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'fadeInScale': {
+					'0%': {
+						opacity: '0',
+						transform: 'scale(0.8) translateY(20px)'
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'scale(1) translateY(0)'
+					}
+				},
+				'slideInUp': {
+					'0%': {
+						opacity: '0',
+						transform: 'translateY(50px)'
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translateY(0)'
+					}
+				},
+				'slideInLeft': {
+					'0%': {
+						opacity: '0',
+						transform: 'translateX(-50px)'
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translateX(0)'
+					}
+				},
+				'slideInRight': {
+					'0%': {
+						opacity: '0',
+						transform: 'translateX(50px)'
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translateX(0)'
+					}
+				},
+				'expandWidth': {
+					'0%': {
+						width: '0%'
+					},
+					'100%': {
+						width: '100%'
+					}
+				},
+				'glow': {
+					'0%': {
+						textShadow: '0 0 5px rgba(139, 92, 246, 0.5)'
+					},
+					'100%': {
+						textShadow: '0 0 20px rgba(139, 92, 246, 0.8), 0 0 30px rgba(139, 92, 246, 0.6)'
+					}
+				},
+				'bounceIn': {
+					'0%': {
+						opacity: '0',
+						transform: 'translateY(100px) scale(0.3)'
+					},
+					'50%': {
+						transform: 'translateY(-10px) scale(1.05)'
+					},
+					'70%': {
+						transform: 'translateY(0px) scale(0.9)'
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translateY(0px) scale(1)'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fadeInScale': 'fadeInScale 1.5s ease-out',
+				'slideInUp': 'slideInUp 1s ease-out',
+				'slideInLeft': 'slideInLeft 1s ease-out',
+				'slideInRight': 'slideInRight 1s ease-out',
+				'expandWidth': 'expandWidth 2s ease-out',
+				'glow': 'glow 2s ease-in-out infinite alternate',
+				'bounceIn': 'bounceIn 2s ease-out'
 			}
 		}
 	},
