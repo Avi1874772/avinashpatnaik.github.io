@@ -59,8 +59,8 @@ const Contact = () => {
     {
       icon: Phone,
       label: 'Phone',
-      value: '+39 (555) 123-4567',
-      href: 'tel:+395551234567',
+      value: '+39 (351) 029-0250',
+      href: 'tel:+393510290250',
       color: 'text-green-400'
     },
     {
@@ -73,8 +73,8 @@ const Contact = () => {
   ];
 
   const socialLinks = [
-    { icon: Linkedin, href: '#', color: 'hover:text-blue-400' },
-    { icon: Github, href: '#', color: 'hover:text-gray-400' },
+    { icon: Linkedin, href: 'https://www.linkedin.com/in/patnaik-avinash-9a5b612aa/', color: 'hover:text-blue-400' },
+    { icon: Github, href: 'https://github.com/Avi1874772', color: 'hover:text-gray-400' },
     { icon: Twitter, href: '#', color: 'hover:text-blue-300' },
   ];
 
