@@ -21,63 +21,63 @@ const ParticleBackground = () => {
     // World map outline coordinates (simplified continental outlines)
     const worldMapOutline = [
       // North America
-      { x: 0.15, y: 0.25 }, { x: 0.18, y: 0.22 }, { x: 0.25, y: 0.20 }, { x: 0.30, y: 0.25 },
-      { x: 0.32, y: 0.30 }, { x: 0.28, y: 0.35 }, { x: 0.25, y: 0.40 }, { x: 0.20, y: 0.45 },
-      { x: 0.15, y: 0.42 }, { x: 0.12, y: 0.38 }, { x: 0.10, y: 0.32 }, { x: 0.15, y: 0.25 },
-      
+      { x: 0.12, y: 0.28 }, { x: 0.15, y: 0.22 }, { x: 0.20, y: 0.20 }, { x: 0.28, y: 0.20 },
+      { x: 0.32, y: 0.25 }, { x: 0.34, y: 0.30 }, { x: 0.30, y: 0.38 }, { x: 0.25, y: 0.42 },
+      { x: 0.20, y: 0.46 }, { x: 0.17, y: 0.44 }, { x: 0.14, y: 0.38 }, { x: 0.12, y: 0.32 }, { x: 0.12, y: 0.28 },
+
       // South America
-      { x: 0.25, y: 0.50 }, { x: 0.28, y: 0.48 }, { x: 0.32, y: 0.52 }, { x: 0.35, y: 0.60 },
-      { x: 0.33, y: 0.70 }, { x: 0.30, y: 0.75 }, { x: 0.26, y: 0.72 }, { x: 0.22, y: 0.65 },
-      { x: 0.20, y: 0.55 }, { x: 0.25, y: 0.50 },
-      
+      { x: 0.24, y: 0.52 }, { x: 0.28, y: 0.50 }, { x: 0.33, y: 0.54 }, { x: 0.36, y: 0.62 },
+      { x: 0.34, y: 0.72 }, { x: 0.30, y: 0.76 }, { x: 0.26, y: 0.73 }, { x: 0.22, y: 0.66 },
+      { x: 0.20, y: 0.56 }, { x: 0.24, y: 0.52 },
+
       // Europe
-      { x: 0.45, y: 0.22 }, { x: 0.50, y: 0.20 }, { x: 0.55, y: 0.25 }, { x: 0.52, y: 0.30 },
-      { x: 0.48, y: 0.32 }, { x: 0.45, y: 0.28 }, { x: 0.45, y: 0.22 },
-      
+      { x: 0.44, y: 0.24 }, { x: 0.48, y: 0.21 }, { x: 0.53, y: 0.23 }, { x: 0.55, y: 0.27 },
+      { x: 0.53, y: 0.32 }, { x: 0.49, y: 0.34 }, { x: 0.46, y: 0.30 }, { x: 0.44, y: 0.24 },
+
       // Africa
-      { x: 0.45, y: 0.35 }, { x: 0.50, y: 0.33 }, { x: 0.55, y: 0.38 }, { x: 0.58, y: 0.45 },
-      { x: 0.56, y: 0.55 }, { x: 0.52, y: 0.65 }, { x: 0.48, y: 0.70 }, { x: 0.45, y: 0.68 },
-      { x: 0.42, y: 0.60 }, { x: 0.40, y: 0.50 }, { x: 0.43, y: 0.40 }, { x: 0.45, y: 0.35 },
-      
+      { x: 0.44, y: 0.36 }, { x: 0.48, y: 0.34 }, { x: 0.54, y: 0.36 }, { x: 0.58, y: 0.44 },
+      { x: 0.56, y: 0.54 }, { x: 0.52, y: 0.64 }, { x: 0.48, y: 0.70 }, { x: 0.45, y: 0.68 },
+      { x: 0.42, y: 0.60 }, { x: 0.40, y: 0.50 }, { x: 0.42, y: 0.42 }, { x: 0.44, y: 0.36 },
+
       // Asia
-      { x: 0.60, y: 0.20 }, { x: 0.70, y: 0.18 }, { x: 0.80, y: 0.22 }, { x: 0.85, y: 0.28 },
-      { x: 0.82, y: 0.35 }, { x: 0.75, y: 0.40 }, { x: 0.70, y: 0.45 }, { x: 0.65, y: 0.42 },
-      { x: 0.60, y: 0.38 }, { x: 0.58, y: 0.30 }, { x: 0.60, y: 0.20 },
-      
+      { x: 0.60, y: 0.22 }, { x: 0.68, y: 0.20 }, { x: 0.78, y: 0.24 }, { x: 0.84, y: 0.30 },
+      { x: 0.82, y: 0.36 }, { x: 0.76, y: 0.40 }, { x: 0.72, y: 0.44 }, { x: 0.66, y: 0.42 },
+      { x: 0.62, y: 0.38 }, { x: 0.60, y: 0.32 }, { x: 0.60, y: 0.22 },
+
       // Australia
-      { x: 0.85, y: 0.65 }, { x: 0.90, y: 0.63 }, { x: 0.93, y: 0.68 }, { x: 0.90, y: 0.72 },
-      { x: 0.85, y: 0.70 }, { x: 0.85, y: 0.65 }
+      { x: 0.84, y: 0.66 }, { x: 0.89, y: 0.64 }, { x: 0.92, y: 0.69 }, { x: 0.89, y: 0.74 },
+      { x: 0.84, y: 0.72 }, { x: 0.84, y: 0.66 }
     ];
 
     // Enhanced world cities for data nodes
     const worldCities = [
-      { name: 'New York', x: 0.25, y: 0.35, continent: 'NA', type: 'Financial' },
-      { name: 'London', x: 0.48, y: 0.32, continent: 'EU', type: 'Financial' },
-      { name: 'Paris', x: 0.49, y: 0.34, continent: 'EU', type: 'Research' },
-      { name: 'Rome', x: 0.51, y: 0.38, continent: 'EU', type: 'Cultural' },
-      { name: 'Tokyo', x: 0.85, y: 0.4, continent: 'AS', type: 'Tech' },
-      { name: 'Sydney', x: 0.9, y: 0.75, continent: 'OC', type: 'Mining' },
-      { name: 'Mumbai', x: 0.72, y: 0.45, continent: 'AS', type: 'Tech' },
-      { name: 'São Paulo', x: 0.32, y: 0.65, continent: 'SA', type: 'Industrial' },
-      { name: 'Cairo', x: 0.54, y: 0.42, continent: 'AF', type: 'Historical' },
+      { name: 'New York', x: 0.26, y: 0.34, continent: 'NA', type: 'Financial' },
+      { name: 'London', x: 0.48, y: 0.29, continent: 'EU', type: 'Financial' },
+      { name: 'Paris', x: 0.49, y: 0.31, continent: 'EU', type: 'Research' },
+      { name: 'Rome', x: 0.51, y: 0.36, continent: 'EU', type: 'Cultural' },
+      { name: 'Tokyo', x: 0.84, y: 0.36, continent: 'AS', type: 'Tech' },
+      { name: 'Sydney', x: 0.89, y: 0.73, continent: 'OC', type: 'Mining' },
+      { name: 'Mumbai', x: 0.71, y: 0.45, continent: 'AS', type: 'Tech' },
+      { name: 'São Paulo', x: 0.30, y: 0.66, continent: 'SA', type: 'Industrial' },
+      { name: 'Cairo', x: 0.52, y: 0.42, continent: 'AF', type: 'Historical' },
       { name: 'Dubai', x: 0.62, y: 0.43, continent: 'AS', type: 'Trade' },
-      { name: 'Singapore', x: 0.78, y: 0.55, continent: 'AS', type: 'Finance' },
-      { name: 'Toronto', x: 0.22, y: 0.32, continent: 'NA', type: 'Finance' },
-      { name: 'Berlin', x: 0.51, y: 0.31, continent: 'EU', type: 'Tech' },
+      { name: 'Singapore', x: 0.76, y: 0.54, continent: 'AS', type: 'Finance' },
+      { name: 'Toronto', x: 0.22, y: 0.30, continent: 'NA', type: 'Finance' },
+      { name: 'Berlin', x: 0.51, y: 0.30, continent: 'EU', type: 'Tech' },
       { name: 'Moscow', x: 0.58, y: 0.28, continent: 'EU', type: 'Energy' },
-      { name: 'Beijing', x: 0.82, y: 0.35, continent: 'AS', type: 'Tech' },
-      { name: 'Seoul', x: 0.86, y: 0.37, continent: 'AS', type: 'Tech' },
-      { name: 'Los Angeles', x: 0.15, y: 0.42, continent: 'NA', type: 'Media' },
-      { name: 'Mexico City', x: 0.18, y: 0.45, continent: 'NA', type: 'Manufacturing' },
+      { name: 'Beijing', x: 0.80, y: 0.34, continent: 'AS', type: 'Tech' },
+      { name: 'Seoul', x: 0.83, y: 0.35, continent: 'AS', type: 'Tech' },
+      { name: 'Los Angeles', x: 0.16, y: 0.41, continent: 'NA', type: 'Media' },
+      { name: 'Mexico City', x: 0.20, y: 0.45, continent: 'NA', type: 'Manufacturing' },
       { name: 'Lagos', x: 0.50, y: 0.55, continent: 'AF', type: 'Oil' },
-      { name: 'Cape Town', x: 0.52, y: 0.72, continent: 'AF', type: 'Mining' },
-      { name: 'San Francisco', x: 0.12, y: 0.38, continent: 'NA', type: 'Tech' },
-      { name: 'Boston', x: 0.27, y: 0.33, continent: 'NA', type: 'Research' },
-      { name: 'Frankfurt', x: 0.50, y: 0.30, continent: 'EU', type: 'Finance' },
-      { name: 'Amsterdam', x: 0.49, y: 0.29, continent: 'EU', type: 'Trade' },
-      { name: 'Hong Kong', x: 0.82, y: 0.43, continent: 'AS', type: 'Finance' },
-      { name: 'Bangalore', x: 0.75, y: 0.48, continent: 'AS', type: 'Tech' },
-      { name: 'Tel Aviv', x: 0.56, y: 0.40, continent: 'AS', type: 'Tech' },
+      { name: 'Cape Town', x: 0.48, y: 0.71, continent: 'AF', type: 'Mining' },
+      { name: 'San Francisco', x: 0.13, y: 0.37, continent: 'NA', type: 'Tech' },
+      { name: 'Boston', x: 0.27, y: 0.32, continent: 'NA', type: 'Research' },
+      { name: 'Frankfurt', x: 0.50, y: 0.29, continent: 'EU', type: 'Finance' },
+      { name: 'Amsterdam', x: 0.48, y: 0.28, continent: 'EU', type: 'Trade' },
+      { name: 'Hong Kong', x: 0.81, y: 0.41, continent: 'AS', type: 'Finance' },
+      { name: 'Bangalore', x: 0.73, y: 0.47, continent: 'AS', type: 'Tech' },
+      { name: 'Tel Aviv', x: 0.58, y: 0.39, continent: 'AS', type: 'Tech' },
       { name: 'Stockholm', x: 0.52, y: 0.26, continent: 'EU', type: 'Tech' }
     ];
 
