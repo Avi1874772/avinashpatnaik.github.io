@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from 'react';
 
 const ParticleBackground = () => {
@@ -152,7 +151,7 @@ const ParticleBackground = () => {
       size: number;
     }> = [];
 
-    // Continental color scheme (reduced opacity)
+    // Continental color scheme (very reduced opacity)
     const continentColors = {
       'NA': 'rgba(59, 130, 246, ',    // Blue
       'EU': 'rgba(34, 197, 94, ',     // Green
@@ -174,7 +173,7 @@ const ParticleBackground = () => {
     window.addEventListener('mousemove', handleMouseMove);
 
     const createDataPacket = () => {
-      if (dataPackets.length < 15 && Math.random() < 0.03) {
+      if (dataPackets.length < 8 && Math.random() < 0.015) {
         const fromIndex = Math.floor(Math.random() * dataNodes.length);
         const fromNode = dataNodes[fromIndex];
         
@@ -195,7 +194,7 @@ const ParticleBackground = () => {
             toNode: toIndex,
             data: dataTypes[Math.floor(Math.random() * dataTypes.length)],
             color: continentColors[fromNode.continent] || 'rgba(255, 255, 255, ',
-            size: 1.5 + Math.random() * 1.5
+            size: 1 + Math.random() * 1
           });
         }
       }
@@ -204,20 +203,20 @@ const ParticleBackground = () => {
     const animate = () => {
       time += 0.01;
       
-      // Create very subtle background gradient
+      // Very subtle background gradient
       const gradient = ctx.createRadialGradient(
         canvas.width / 2, canvas.height / 2, 0,
         canvas.width / 2, canvas.height / 2, Math.max(canvas.width, canvas.height)
       );
-      gradient.addColorStop(0, 'rgba(15, 23, 42, 0.3)');
-      gradient.addColorStop(0.5, 'rgba(30, 41, 59, 0.2)');
-      gradient.addColorStop(1, 'rgba(15, 23, 42, 0.3)');
+      gradient.addColorStop(0, 'rgba(15, 23, 42, 0.05)');
+      gradient.addColorStop(0.5, 'rgba(30, 41, 59, 0.03)');
+      gradient.addColorStop(1, 'rgba(15, 23, 42, 0.05)');
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Draw very subtle world map outline
-      ctx.strokeStyle = 'rgba(100, 116, 139, 0.1)';
-      ctx.lineWidth = 0.8;
+      // Very subtle world map outline
+      ctx.strokeStyle = 'rgba(100, 116, 139, 0.03)';
+      ctx.lineWidth = 0.5;
       ctx.beginPath();
       
       worldMapOutline.forEach((point, index) => {
@@ -232,11 +231,11 @@ const ParticleBackground = () => {
       });
       ctx.stroke();
 
-      // Draw very subtle continental grid lines
+      // Very subtle continental grid lines
       for (let i = 0; i < 8; i++) {
-        const opacity = 0.02 + Math.sin(time * 2 + i) * 0.01;
+        const opacity = 0.005 + Math.sin(time * 2 + i) * 0.003;
         ctx.strokeStyle = `rgba(100, 116, 139, ${opacity})`;
-        ctx.lineWidth = 0.3;
+        ctx.lineWidth = 0.2;
         ctx.beginPath();
         ctx.moveTo(0, (i / 7) * canvas.height);
         ctx.lineTo(canvas.width, (i / 7) * canvas.height);
@@ -244,9 +243,9 @@ const ParticleBackground = () => {
       }
 
       for (let i = 0; i < 12; i++) {
-        const opacity = 0.02 + Math.sin(time * 1.5 + i) * 0.01;
+        const opacity = 0.005 + Math.sin(time * 1.5 + i) * 0.003;
         ctx.strokeStyle = `rgba(100, 116, 139, ${opacity})`;
-        ctx.lineWidth = 0.3;
+        ctx.lineWidth = 0.2;
         ctx.beginPath();
         ctx.moveTo((i / 11) * canvas.width, 0);
         ctx.lineTo((i / 11) * canvas.width, canvas.height);
@@ -270,61 +269,61 @@ const ParticleBackground = () => {
         const distance = Math.sqrt(dx * dx + dy * dy);
         const isHovered = distance < 60;
 
-        // Draw subtle connections
+        // Draw very subtle connections
         node.connections.forEach(connectionIndex => {
           const targetNode = dataNodes[connectionIndex];
           const connectionStrength = (node.importance + targetNode.importance) / 2;
-          const baseOpacity = 0.05 + connectionStrength * 0.1;
-          const animatedOpacity = baseOpacity + Math.sin(time * 2 + index) * 0.02;
-          const finalOpacity = animatedOpacity + (isHovered ? 0.15 : 0);
+          const baseOpacity = 0.01 + connectionStrength * 0.02;
+          const animatedOpacity = baseOpacity + Math.sin(time * 2 + index) * 0.005;
+          const finalOpacity = animatedOpacity + (isHovered ? 0.03 : 0);
           
           ctx.strokeStyle = continentColors[node.continent] + finalOpacity + ')';
-          ctx.lineWidth = 0.5 + connectionStrength * 0.5 + (isHovered ? 0.5 : 0);
+          ctx.lineWidth = 0.3 + connectionStrength * 0.2 + (isHovered ? 0.2 : 0);
           ctx.beginPath();
           ctx.moveTo(node.x, node.y);
           ctx.lineTo(targetNode.x, targetNode.y);
           ctx.stroke();
 
-          // Data flow pulses along connections
-          if (Math.random() < 0.01 * connectionStrength) {
+          // Very subtle data flow pulses
+          if (Math.random() < 0.005 * connectionStrength) {
             const flowProgress = Math.random();
             const flowX = node.x + (targetNode.x - node.x) * flowProgress;
             const flowY = node.y + (targetNode.y - node.y) * flowProgress;
             
             ctx.beginPath();
-            ctx.arc(flowX, flowY, 1, 0, Math.PI * 2);
-            ctx.fillStyle = continentColors[node.continent] + '0.3)';
+            ctx.arc(flowX, flowY, 0.5, 0, Math.PI * 2);
+            ctx.fillStyle = continentColors[node.continent] + '0.05)';
             ctx.fill();
           }
         });
 
-        // Draw subtle nodes
-        const baseSize = 2 + node.importance * 2;
-        const nodeSize = baseSize + node.pulse * 2 + (isHovered ? 2 : 0);
+        // Draw very subtle nodes
+        const baseSize = 1 + node.importance * 1;
+        const nodeSize = baseSize + node.pulse * 1 + (isHovered ? 1 : 0);
         
-        // Subtle outer glow
-        ctx.shadowBlur = 8 + node.pulse * 5 + node.importance * 3;
-        ctx.shadowColor = continentColors[node.continent] + '0.2)';
+        // Very subtle outer glow
+        ctx.shadowBlur = 3 + node.pulse * 2 + node.importance * 1;
+        ctx.shadowColor = continentColors[node.continent] + '0.03)';
         ctx.beginPath();
         ctx.arc(node.x, node.y, nodeSize, 0, Math.PI * 2);
-        ctx.fillStyle = continentColors[node.continent] + (0.15 + node.pulse * 0.1 + node.importance * 0.05) + ')';
+        ctx.fillStyle = continentColors[node.continent] + (0.02 + node.pulse * 0.01 + node.importance * 0.01) + ')';
         ctx.fill();
         
         // Inner core
         ctx.shadowBlur = 0;
         ctx.beginPath();
         ctx.arc(node.x, node.y, nodeSize * 0.4, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
         ctx.fill();
 
         // Data type indicator (only on hover)
         if (isHovered) {
           ctx.font = 'bold 10px monospace';
-          ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
           ctx.textAlign = 'center';
           ctx.fillText(node.name, node.x, node.y - nodeSize - 15);
           ctx.font = '8px monospace';
-          ctx.fillStyle = continentColors[node.continent] + '0.7)';
+          ctx.fillStyle = continentColors[node.continent] + '0.5)';
           ctx.fillText(`${node.type} Hub`, node.x, node.y - nodeSize - 5);
         }
       });
@@ -343,8 +342,8 @@ const ParticleBackground = () => {
         packet.x = packet.x + (packet.targetX - packet.x) * packet.speed * 15;
         packet.y = packet.y + (packet.targetY - packet.y) * packet.speed * 15;
 
-        // Draw subtle packet
-        const alpha = (1 - packet.progress * 0.5) * 0.4;
+        // Draw very subtle packet
+        const alpha = (1 - packet.progress * 0.5) * 0.08;
         ctx.beginPath();
         ctx.arc(packet.x, packet.y, packet.size, 0, Math.PI * 2);
         ctx.fillStyle = packet.color + alpha + ')';
