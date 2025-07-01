@@ -59,8 +59,8 @@ const Contact = () => {
     {
       icon: Phone,
       label: 'Phone',
-      value: '+39 3510290250',
-      href: 'tel:+393510290250',
+      value: '+39 (555) 123-4567',
+      href: 'tel:+395551234567',
       color: 'text-green-400'
     },
     {
