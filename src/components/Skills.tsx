@@ -32,7 +32,7 @@ const Skills = () => {
         { 
           name: 'MLOps & Deployment', 
           details: 'Model versioning, CI/CD pipelines, containerization, monitoring',
-          expertise: 'Advanced'
+          expertise: 'Expert'
         },
       ]
     },
