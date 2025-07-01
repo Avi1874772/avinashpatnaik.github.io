@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef, useState } from 'react';
-import { BarChart, Brain, Database, TrendingUp, Code, Palette } from 'lucide-react';
+import { Brain, Database, TrendingUp, Code, Palette, Globe } from 'lucide-react';
 
 const Skills = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -9,47 +9,171 @@ const Skills = () => {
 
   const skillCategories = [
     {
-      title: 'Machine Learning',
+      title: 'Machine Learning & AI',
       icon: Brain,
       color: 'from-blue-500 to-cyan-500',
+      description: 'Advanced expertise in building intelligent systems',
       skills: [
-        { name: 'Python/Scikit-learn', level: 95 },
-        { name: 'TensorFlow/Keras', level: 90 },
-        { name: 'PyTorch', level: 85 },
-        { name: 'XGBoost/LightGBM', level: 88 },
-      ]
-    },
-    {
-      title: 'Data Analysis',
-      icon: BarChart,
-      color: 'from-green-500 to-emerald-500',
-      skills: [
-        { name: 'Pandas/NumPy', level: 98 },
-        { name: 'R/RStudio', level: 92 },
-        { name: 'Statistical Analysis', level: 90 },
-        { name: 'A/B Testing', level: 85 },
+        { 
+          name: 'Deep Learning', 
+          details: 'Neural networks, CNNs, RNNs, Transformers with TensorFlow & PyTorch',
+          expertise: 'Expert'
+        },
+        { 
+          name: 'Classical ML', 
+          details: 'Supervised/Unsupervised learning, ensemble methods, feature engineering',
+          expertise: 'Expert'
+        },
+        { 
+          name: 'NLP & Computer Vision', 
+          details: 'Text processing, image recognition, object detection, sentiment analysis',
+          expertise: 'Advanced'
+        },
+        { 
+          name: 'MLOps & Deployment', 
+          details: 'Model versioning, CI/CD pipelines, containerization, monitoring',
+          expertise: 'Advanced'
+        },
       ]
     },
     {
       title: 'Data Engineering',
       icon: Database,
-      color: 'from-purple-500 to-violet-500',
+      color: 'from-green-500 to-emerald-500',
+      description: 'Scalable data infrastructure and pipeline development',
       skills: [
-        { name: 'SQL/PostgreSQL', level: 93 },
-        { name: 'Apache Spark', level: 80 },
-        { name: 'Docker/Kubernetes', level: 75 },
-        { name: 'AWS/GCP', level: 82 },
+        { 
+          name: 'Big Data Technologies', 
+          details: 'Apache Spark, Hadoop, Kafka for large-scale data processing',
+          expertise: 'Expert'
+        },
+        { 
+          name: 'Cloud Platforms', 
+          details: 'AWS, GCP, Azure - Data lakes, warehouses, serverless computing',
+          expertise: 'Advanced'
+        },
+        { 
+          name: 'Database Systems', 
+          details: 'SQL/NoSQL, PostgreSQL, MongoDB, Redis, time-series databases',
+          expertise: 'Expert'
+        },
+        { 
+          name: 'Data Pipelines', 
+          details: 'ETL/ELT, real-time streaming, data quality, orchestration',
+          expertise: 'Advanced'
+        },
       ]
     },
     {
-      title: 'Visualization',
+      title: 'Analytics & Statistics',
+      icon: TrendingUp,
+      color: 'from-purple-500 to-violet-500',
+      description: 'Statistical modeling and business intelligence',
+      skills: [
+        { 
+          name: 'Statistical Analysis', 
+          details: 'Hypothesis testing, regression analysis, time series forecasting',
+          expertise: 'Expert'
+        },
+        { 
+          name: 'Business Intelligence', 
+          details: 'KPI development, dashboard creation, stakeholder reporting',
+          expertise: 'Advanced'
+        },
+        { 
+          name: 'Experimental Design', 
+          details: 'A/B testing, causal inference, statistical significance testing',
+          expertise: 'Advanced'
+        },
+        { 
+          name: 'Predictive Modeling', 
+          details: 'Forecasting, risk assessment, optimization algorithms',
+          expertise: 'Expert'
+        },
+      ]
+    },
+    {
+      title: 'Programming & Tools',
+      icon: Code,
+      color: 'from-orange-500 to-red-500',
+      description: 'Full-stack development and data science tools',
+      skills: [
+        { 
+          name: 'Python Ecosystem', 
+          details: 'Pandas, NumPy, Scikit-learn, Matplotlib, Seaborn, Jupyter',
+          expertise: 'Expert'
+        },
+        { 
+          name: 'R & Statistical Computing', 
+          details: 'RStudio, ggplot2, dplyr, statistical packages, Shiny apps',
+          expertise: 'Advanced'
+        },
+        { 
+          name: 'Web Technologies', 
+          details: 'React, TypeScript, REST APIs, microservices architecture',
+          expertise: 'Advanced'
+        },
+        { 
+          name: 'DevOps & Version Control', 
+          details: 'Git, Docker, Kubernetes, CI/CD, infrastructure as code',
+          expertise: 'Advanced'
+        },
+      ]
+    },
+    {
+      title: 'Data Visualization',
       icon: Palette,
       color: 'from-pink-500 to-rose-500',
+      description: 'Creating compelling visual narratives from data',
       skills: [
-        { name: 'Tableau', level: 90 },
-        { name: 'Power BI', level: 85 },
-        { name: 'Matplotlib/Seaborn', level: 92 },
-        { name: 'D3.js', level: 78 },
+        { 
+          name: 'Interactive Dashboards', 
+          details: 'Tableau, Power BI, Plotly Dash, real-time monitoring',
+          expertise: 'Expert'
+        },
+        { 
+          name: 'Custom Visualizations', 
+          details: 'D3.js, custom charts, interactive web applications',
+          expertise: 'Advanced'
+        },
+        { 
+          name: 'Storytelling with Data', 
+          details: 'Executive presentations, insight communication, visual design',
+          expertise: 'Expert'
+        },
+        { 
+          name: 'Geospatial Analytics', 
+          details: 'GIS, mapping, location intelligence, spatial statistics',
+          expertise: 'Intermediate'
+        },
+      ]
+    },
+    {
+      title: 'Domain Expertise',
+      icon: Globe,
+      color: 'from-indigo-500 to-blue-500',
+      description: 'Industry knowledge and business acumen',
+      skills: [
+        { 
+          name: 'Financial Analytics', 
+          details: 'Risk modeling, fraud detection, algorithmic trading, fintech',
+          expertise: 'Advanced'
+        },
+        { 
+          name: 'Healthcare & Biotech', 
+          details: 'Clinical data analysis, drug discovery, medical imaging',
+          expertise: 'Intermediate'
+        },
+        { 
+          name: 'E-commerce & Marketing', 
+          details: 'Customer segmentation, recommendation systems, attribution',
+          expertise: 'Advanced'
+        },
+        { 
+          name: 'IoT & Sensors', 
+          details: 'Time-series analysis, anomaly detection, predictive maintenance',
+          expertise: 'Advanced'
+        },
       ]
     },
   ];
@@ -59,7 +183,6 @@ const Skills = () => {
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          // Animate skills progressively
           skillCategories.forEach((category, categoryIndex) => {
             category.skills.forEach((skill, skillIndex) => {
               setTimeout(() => {
@@ -79,36 +202,50 @@ const Skills = () => {
     return () => observer.disconnect();
   }, []);
 
+  const getExpertiseColor = (expertise: string) => {
+    switch (expertise) {
+      case 'Expert': return 'text-green-400 bg-green-400/10';
+      case 'Advanced': return 'text-blue-400 bg-blue-400/10';
+      case 'Intermediate': return 'text-yellow-400 bg-yellow-400/10';
+      default: return 'text-gray-400 bg-gray-400/10';
+    }
+  };
+
   return (
     <section id="skills" ref={sectionRef} className="py-20 px-6 bg-gradient-to-br from-slate-800/20 to-slate-900/20">
-      <div className="container mx-auto max-w-6xl">
+      <div className="container mx-auto max-w-7xl">
         <div className={`text-center mb-16 transition-all duration-1000 ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         }`}>
           <h2 className="text-5xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-            Technical Skills
+            Technical Expertise
           </h2>
           <div className="w-20 h-1 bg-gradient-to-r from-blue-400 to-purple-400 mx-auto mb-8"></div>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Proficient in cutting-edge technologies and methodologies for data science and analytics
+          <p className="text-xl text-gray-300 max-w-4xl mx-auto">
+            Comprehensive data science and engineering capabilities spanning the entire ML lifecycle, 
+            from data collection and processing to model deployment and business impact measurement.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid lg:grid-cols-2 xl:grid-cols-3 gap-8">
           {skillCategories.map((category, categoryIndex) => (
             <div
               key={category.title}
-              className={`bg-gradient-to-br from-slate-800/50 to-slate-900/50 p-8 rounded-xl border border-slate-700/50 hover:border-slate-600/50 transition-all duration-500 ${
+              className={`bg-gradient-to-br from-slate-800/50 to-slate-900/50 p-6 rounded-xl border border-slate-700/50 hover:border-slate-600/50 transition-all duration-500 ${
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
-              style={{ transitionDelay: `${categoryIndex * 200}ms` }}
+              style={{ transitionDelay: `${categoryIndex * 150}ms` }}
             >
-              <div className="flex items-center mb-6">
+              <div className="flex items-center mb-4">
                 <div className={`p-3 rounded-lg bg-gradient-to-r ${category.color} mr-4`}>
                   <category.icon className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-2xl font-bold text-white">{category.title}</h3>
+                <div>
+                  <h3 className="text-xl font-bold text-white">{category.title}</h3>
+                </div>
               </div>
+              
+              <p className="text-gray-400 text-sm mb-6">{category.description}</p>
 
               <div className="space-y-4">
                 {category.skills.map((skill, skillIndex) => {
@@ -116,26 +253,47 @@ const Skills = () => {
                   const isAnimated = animatedSkills.has(skillKey);
                   
                   return (
-                    <div key={skill.name} className="space-y-2">
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-300 font-medium">{skill.name}</span>
-                        <span className="text-gray-400 text-sm">{skill.level}%</span>
+                    <div 
+                      key={skill.name} 
+                      className={`transition-all duration-500 ${
+                        isAnimated ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'
+                      }`}
+                      style={{ transitionDelay: `${skillIndex * 100}ms` }}
+                    >
+                      <div className="flex justify-between items-start mb-2">
+                        <h4 className="text-white font-semibold text-sm">{skill.name}</h4>
+                        <span className={`px-2 py-1 rounded text-xs font-medium ${getExpertiseColor(skill.expertise)}`}>
+                          {skill.expertise}
+                        </span>
                       </div>
-                      <div className="w-full bg-slate-700 rounded-full h-2 overflow-hidden">
-                        <div
-                          className={`h-full bg-gradient-to-r ${category.color} transition-all duration-1000 ease-out`}
-                          style={{
-                            width: isAnimated ? `${skill.level}%` : '0%',
-                            transitionDelay: `${skillIndex * 100}ms`
-                          }}
-                        />
-                      </div>
+                      <p className="text-gray-400 text-xs leading-relaxed">{skill.details}</p>
                     </div>
                   );
                 })}
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Professional Summary */}
+        <div className={`mt-16 bg-gradient-to-r from-slate-800/30 to-slate-900/30 p-8 rounded-xl border border-slate-700/30 transition-all duration-1000 delay-1000 ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        }`}>
+          <h3 className="text-2xl font-bold text-white mb-4 text-center">Professional Impact</h3>
+          <div className="grid md:grid-cols-3 gap-6 text-center">
+            <div>
+              <div className="text-3xl font-bold text-blue-400 mb-2">5+</div>
+              <div className="text-gray-300">Years Experience</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-green-400 mb-2">50+</div>
+              <div className="text-gray-300">ML Models Deployed</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-purple-400 mb-2">$2M+</div>
+              <div className="text-gray-300">Business Value Generated</div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

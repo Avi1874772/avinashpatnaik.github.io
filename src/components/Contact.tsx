@@ -52,21 +52,21 @@ const Contact = () => {
     {
       icon: Mail,
       label: 'Email',
-      value: 'alex@datascientist.com',
-      href: 'mailto:alex@datascientist.com',
+      value: 'avinashpatnaik1001@gmail.com',
+      href: 'mailto:avinashpatnaik1001@gmail.com',
       color: 'text-blue-400'
     },
     {
       icon: Phone,
       label: 'Phone',
-      value: '+1 (555) 123-4567',
-      href: 'tel:+15551234567',
+      value: '+39 (555) 123-4567',
+      href: 'tel:+395551234567',
       color: 'text-green-400'
     },
     {
       icon: MapPin,
       label: 'Location',
-      value: 'San Francisco, CA',
+      value: 'Rome, Italy',
       href: '#',
       color: 'text-purple-400'
     }
@@ -89,7 +89,7 @@ const Contact = () => {
           </h2>
           <div className="w-20 h-1 bg-gradient-to-r from-blue-400 to-purple-400 mx-auto mb-8"></div>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Ready to turn your data into actionable insights? Let's discuss your project!
+            Ready to transform your data into actionable insights? Let's discuss how we can drive your business forward with AI and analytics.
           </p>
         </div>
 

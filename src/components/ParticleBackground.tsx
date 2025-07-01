@@ -19,131 +19,144 @@ const ParticleBackground = () => {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Data streams and nodes
+    // World map coordinates (simplified major cities)
+    const worldCities = [
+      { name: 'New York', x: 0.25, y: 0.35, continent: 'NA' },
+      { name: 'London', x: 0.48, y: 0.32, continent: 'EU' },
+      { name: 'Paris', x: 0.49, y: 0.34, continent: 'EU' },
+      { name: 'Rome', x: 0.51, y: 0.38, continent: 'EU' },
+      { name: 'Tokyo', x: 0.85, y: 0.4, continent: 'AS' },
+      { name: 'Sydney', x: 0.9, y: 0.75, continent: 'OC' },
+      { name: 'Mumbai', x: 0.72, y: 0.45, continent: 'AS' },
+      { name: 'São Paulo', x: 0.32, y: 0.65, continent: 'SA' },
+      { name: 'Cairo', x: 0.54, y: 0.42, continent: 'AF' },
+      { name: 'Dubai', x: 0.62, y: 0.43, continent: 'AS' },
+      { name: 'Singapore', x: 0.78, y: 0.55, continent: 'AS' },
+      { name: 'Toronto', x: 0.22, y: 0.32, continent: 'NA' },
+      { name: 'Berlin', x: 0.51, y: 0.31, continent: 'EU' },
+      { name: 'Moscow', x: 0.58, y: 0.28, continent: 'EU' },
+      { name: 'Beijing', x: 0.82, y: 0.35, continent: 'AS' },
+      { name: 'Seoul', x: 0.86, y: 0.37, continent: 'AS' },
+      { name: 'Los Angeles', x: 0.15, y: 0.42, continent: 'NA' },
+      { name: 'Mexico City', x: 0.18, y: 0.45, continent: 'NA' },
+      { name: 'Lagos', x: 0.50, y: 0.55, continent: 'AF' },
+      { name: 'Cape Town', x: 0.52, y: 0.72, continent: 'AF' }
+    ];
+
+    // Data nodes based on world cities
     const dataNodes: Array<{
       x: number;
       y: number;
-      vx: number;
-      vy: number;
-      size: number;
-      opacity: number;
-      color: string;
-      dataType: string;
-      pulsePhase: number;
+      name: string;
+      continent: string;
+      pulse: number;
       connections: number[];
+      dataActivity: number;
+      dataType: string;
+      lastPulse: number;
     }> = [];
-
-    // Code rain drops
-    const codeRain: Array<{
-      x: number;
-      y: number;
-      speed: number;
-      chars: string[];
-      opacity: number;
-      color: string;
-    }> = [];
-
-    // Floating charts/graphs
-    const floatingCharts: Array<{
-      x: number;
-      y: number;
-      vx: number;
-      vy: number;
-      size: number;
-      rotation: number;
-      rotationSpeed: number;
-      type: 'bar' | 'line' | 'pie';
-      opacity: number;
-      data: number[];
-    }> = [];
-
-    // Binary streams
-    const binaryStreams: Array<{
-      x: number;
-      y: number;
-      vx: number;
-      vy: number;
-      binary: string;
-      opacity: number;
-      length: number;
-    }> = [];
-
-    const dataColors = [
-      'rgba(34, 197, 94, ', // Green for success/growth
-      'rgba(59, 130, 246, ', // Blue for data
-      'rgba(168, 85, 247, ', // Purple for AI/ML
-      'rgba(236, 72, 153, ', // Pink for analytics
-      'rgba(249, 115, 22, ', // Orange for insights
-      'rgba(14, 165, 233, ', // Sky blue for cloud
-    ];
-
-    const codeChars = ['0', '1', 'α', 'β', 'λ', 'π', 'Σ', '∑', '∫', '∆', 'μ', 'σ', '{', '}', '[', ']', '<', '>', 'ML', 'AI', 'df', 'np', 'pd'];
-    const binaryChars = ['0', '1'];
 
     // Initialize data nodes
-    for (let i = 0; i < 25; i++) {
+    worldCities.forEach((city, index) => {
       dataNodes.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.8,
-        vy: (Math.random() - 0.5) * 0.8,
-        size: Math.random() * 8 + 4,
-        opacity: Math.random() * 0.7 + 0.3,
-        color: dataColors[Math.floor(Math.random() * dataColors.length)],
-        dataType: ['CSV', 'JSON', 'SQL', 'API', 'ML', 'AI'][Math.floor(Math.random() * 6)],
-        pulsePhase: Math.random() * Math.PI * 2,
+        x: city.x * canvas.width,
+        y: city.y * canvas.height,
+        name: city.name,
+        continent: city.continent,
+        pulse: 0,
         connections: [],
+        dataActivity: Math.random(),
+        dataType: ['ML', 'AI', 'Analytics', 'BigData', 'IoT'][Math.floor(Math.random() * 5)],
+        lastPulse: Date.now() + Math.random() * 5000
+      });
+    });
+
+    // Create connections between nodes
+    dataNodes.forEach((node, index) => {
+      // Connect to 2-4 random other nodes
+      const connectionCount = Math.floor(Math.random() * 3) + 2;
+      const possibleConnections = dataNodes
+        .map((_, i) => i)
+        .filter(i => i !== index);
+      
+      for (let i = 0; i < connectionCount && possibleConnections.length > 0; i++) {
+        const randomIndex = Math.floor(Math.random() * possibleConnections.length);
+        const connectionIndex = possibleConnections.splice(randomIndex, 1)[0];
+        if (!node.connections.includes(connectionIndex)) {
+          node.connections.push(connectionIndex);
+        }
+      }
+    });
+
+    // Floating data packets
+    const dataPackets: Array<{
+      x: number;
+      y: number;
+      targetX: number;
+      targetY: number;
+      progress: number;
+      speed: number;
+      fromNode: number;
+      toNode: number;
+      data: string;
+      color: string;
+    }> = [];
+
+    // Digital grid lines
+    const gridLines: Array<{
+      x1: number;
+      y1: number;
+      x2: number;
+      y2: number;
+      opacity: number;
+      type: 'lat' | 'lng';
+    }> = [];
+
+    // Create grid lines
+    for (let i = 0; i < 12; i++) {
+      // Latitude lines
+      gridLines.push({
+        x1: 0,
+        y1: (i / 11) * canvas.height,
+        x2: canvas.width,
+        y2: (i / 11) * canvas.height,
+        opacity: 0.1 + Math.random() * 0.1,
+        type: 'lat'
       });
     }
 
-    // Initialize code rain
-    for (let i = 0; i < 15; i++) {
-      codeRain.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height - canvas.height,
-        speed: Math.random() * 3 + 1,
-        chars: Array(Math.floor(Math.random() * 15 + 5)).fill(0).map(() => 
-          codeChars[Math.floor(Math.random() * codeChars.length)]
-        ),
-        opacity: Math.random() * 0.6 + 0.2,
-        color: dataColors[Math.floor(Math.random() * dataColors.length)],
+    for (let i = 0; i < 24; i++) {
+      // Longitude lines (curved)
+      gridLines.push({
+        x1: (i / 23) * canvas.width,
+        y1: 0,
+        x2: (i / 23) * canvas.width,
+        y2: canvas.height,
+        opacity: 0.1 + Math.random() * 0.1,
+        type: 'lng'
       });
     }
 
-    // Initialize floating charts
-    for (let i = 0; i < 8; i++) {
-      floatingCharts.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
-        size: Math.random() * 30 + 20,
-        rotation: 0,
-        rotationSpeed: (Math.random() - 0.5) * 0.02,
-        type: ['bar', 'line', 'pie'][Math.floor(Math.random() * 3)] as 'bar' | 'line' | 'pie',
-        opacity: Math.random() * 0.4 + 0.1,
-        data: Array(5).fill(0).map(() => Math.random()),
+    // Satellite traces
+    const satellites: Array<{
+      angle: number;
+      radius: number;
+      speed: number;
+      trail: Array<{ x: number; y: number; opacity: number }>;
+    }> = [];
+
+    for (let i = 0; i < 3; i++) {
+      satellites.push({
+        angle: Math.random() * Math.PI * 2,
+        radius: 100 + Math.random() * 200,
+        speed: 0.005 + Math.random() * 0.01,
+        trail: []
       });
     }
 
-    // Initialize binary streams
-    for (let i = 0; i < 20; i++) {
-      binaryStreams.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 2,
-        vy: (Math.random() - 0.5) * 2,
-        binary: Array(Math.floor(Math.random() * 20 + 10)).fill(0).map(() => 
-          binaryChars[Math.floor(Math.random() * 2)]
-        ).join(''),
-        opacity: Math.random() * 0.3 + 0.1,
-        length: Math.random() * 100 + 50,
-      });
-    }
-
+    let time = 0;
     let mouseX = 0;
     let mouseY = 0;
-    let time = 0;
 
     const handleMouseMove = (e: MouseEvent) => {
       mouseX = e.clientX;
@@ -152,222 +165,210 @@ const ParticleBackground = () => {
 
     window.addEventListener('mousemove', handleMouseMove);
 
-    const drawChart = (chart: typeof floatingCharts[0]) => {
-      ctx.save();
-      ctx.translate(chart.x, chart.y);
-      ctx.rotate(chart.rotation);
-      ctx.globalAlpha = chart.opacity;
+    const continentColors = {
+      'NA': 'rgba(59, 130, 246, ',    // Blue
+      'EU': 'rgba(34, 197, 94, ',     // Green
+      'AS': 'rgba(168, 85, 247, ',    // Purple
+      'AF': 'rgba(249, 115, 22, ',    // Orange
+      'SA': 'rgba(236, 72, 153, ',    // Pink
+      'OC': 'rgba(14, 165, 233, '     // Sky blue
+    };
 
-      const size = chart.size;
-      
-      switch (chart.type) {
-        case 'bar':
-          // Draw bar chart
-          const barWidth = size / chart.data.length;
-          chart.data.forEach((value, index) => {
-            const height = value * size;
-            ctx.fillStyle = chart.opacity > 0.2 ? 'rgba(59, 130, 246, 0.6)' : 'rgba(59, 130, 246, 0.3)';
-            ctx.fillRect(index * barWidth - size/2, -height/2, barWidth * 0.8, height);
-          });
-          break;
+    const createDataPacket = () => {
+      if (dataPackets.length < 15 && Math.random() < 0.02) {
+        const fromIndex = Math.floor(Math.random() * dataNodes.length);
+        const fromNode = dataNodes[fromIndex];
+        
+        if (fromNode.connections.length > 0) {
+          const toIndex = fromNode.connections[Math.floor(Math.random() * fromNode.connections.length)];
+          const toNode = dataNodes[toIndex];
           
-        case 'line':
-          // Draw line chart
-          ctx.strokeStyle = chart.opacity > 0.2 ? 'rgba(34, 197, 94, 0.8)' : 'rgba(34, 197, 94, 0.4)';
-          ctx.lineWidth = 2;
-          ctx.beginPath();
-          chart.data.forEach((value, index) => {
-            const x = (index / (chart.data.length - 1)) * size - size/2;
-            const y = (value - 0.5) * size;
-            if (index === 0) ctx.moveTo(x, y);
-            else ctx.lineTo(x, y);
+          dataPackets.push({
+            x: fromNode.x,
+            y: fromNode.y,
+            targetX: toNode.x,
+            targetY: toNode.y,
+            progress: 0,
+            speed: 0.005 + Math.random() * 0.01,
+            fromNode: fromIndex,
+            toNode: toIndex,
+            data: ['JSON', 'CSV', 'API', 'ML', 'AI'][Math.floor(Math.random() * 5)],
+            color: continentColors[fromNode.continent] || 'rgba(255, 255, 255, '
           });
-          ctx.stroke();
-          break;
-          
-        case 'pie':
-          // Draw pie chart
-          let currentAngle = 0;
-          chart.data.forEach((value, index) => {
-            const sliceAngle = (value / chart.data.reduce((a, b) => a + b, 0)) * Math.PI * 2;
-            ctx.fillStyle = `hsl(${index * 60}, 70%, 60%)`;
-            ctx.globalAlpha = chart.opacity;
-            ctx.beginPath();
-            ctx.moveTo(0, 0);
-            ctx.arc(0, 0, size/2, currentAngle, currentAngle + sliceAngle);
-            ctx.closePath();
-            ctx.fill();
-            currentAngle += sliceAngle;
-          });
-          break;
+        }
       }
-      
-      ctx.restore();
     };
 
     const animate = () => {
       time += 0.01;
       
-      // Clear with data-themed gradient
-      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-      gradient.addColorStop(0, 'rgba(15, 23, 42, 0.95)');
+      // Create elegant gradient background
+      const gradient = ctx.createRadialGradient(
+        canvas.width / 2, canvas.height / 2, 0,
+        canvas.width / 2, canvas.height / 2, Math.max(canvas.width, canvas.height)
+      );
+      gradient.addColorStop(0, 'rgba(15, 23, 42, 0.98)');
       gradient.addColorStop(0.5, 'rgba(30, 41, 59, 0.95)');
-      gradient.addColorStop(1, 'rgba(15, 23, 42, 0.95)');
+      gradient.addColorStop(1, 'rgba(15, 23, 42, 0.98)');
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+      // Draw grid lines with subtle animation
+      gridLines.forEach(line => {
+        ctx.strokeStyle = `rgba(100, 116, 139, ${line.opacity + Math.sin(time * 2) * 0.05})`;
+        ctx.lineWidth = 0.5;
+        ctx.beginPath();
+        
+        if (line.type === 'lat') {
+          ctx.moveTo(line.x1, line.y1);
+          ctx.lineTo(line.x2, line.y2);
+        } else {
+          // Curved longitude lines
+          const midY = canvas.height / 2;
+          const curve = Math.sin((line.x1 / canvas.width) * Math.PI) * 50;
+          ctx.moveTo(line.x1, 0);
+          ctx.quadraticCurveTo(line.x1 + curve, midY, line.x1, canvas.height);
+        }
+        ctx.stroke();
+      });
+
+      // Update and draw satellites
+      satellites.forEach(satellite => {
+        satellite.angle += satellite.speed;
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const x = centerX + Math.cos(satellite.angle) * satellite.radius;
+        const y = centerY + Math.sin(satellite.angle) * satellite.radius * 0.3;
+
+        // Add to trail
+        satellite.trail.push({ x, y, opacity: 1 });
+        if (satellite.trail.length > 20) {
+          satellite.trail.shift();
+        }
+
+        // Draw trail
+        satellite.trail.forEach((point, index) => {
+          const opacity = (index / satellite.trail.length) * 0.5;
+          ctx.beginPath();
+          ctx.arc(point.x, point.y, 1, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(14, 165, 233, ${opacity})`;
+          ctx.fill();
+        });
+
+        // Draw satellite
+        ctx.beginPath();
+        ctx.arc(x, y, 3, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(14, 165, 233, 0.8)';
+        ctx.fill();
+      });
+
       // Update and draw data nodes
       dataNodes.forEach((node, index) => {
+        // Update pulse
+        const now = Date.now();
+        if (now - node.lastPulse > 3000 + Math.random() * 2000) {
+          node.pulse = 1;
+          node.lastPulse = now;
+        }
+        node.pulse *= 0.95;
+
         // Mouse interaction
         const dx = mouseX - node.x;
         const dy = mouseY - node.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
+        const isHovered = distance < 100;
+
+        // Draw node connections
+        node.connections.forEach(connectionIndex => {
+          const targetNode = dataNodes[connectionIndex];
+          const connectionOpacity = 0.2 + (isHovered ? 0.3 : 0) + Math.sin(time * 3 + index) * 0.1;
+          
+          ctx.strokeStyle = continentColors[node.continent] + connectionOpacity + ')';
+          ctx.lineWidth = 1 + (isHovered ? 1 : 0);
+          ctx.beginPath();
+          ctx.moveTo(node.x, node.y);
+          ctx.lineTo(targetNode.x, targetNode.y);
+          ctx.stroke();
+
+          // Data flow indicators
+          if (Math.random() < 0.01) {
+            const flowProgress = Math.random();
+            const flowX = node.x + (targetNode.x - node.x) * flowProgress;
+            const flowY = node.y + (targetNode.y - node.y) * flowProgress;
+            
+            ctx.beginPath();
+            ctx.arc(flowX, flowY, 2, 0, Math.PI * 2);
+            ctx.fillStyle = continentColors[node.continent] + '0.8)';
+            ctx.fill();
+          }
+        });
+
+        // Draw node with glow effect
+        const nodeSize = 4 + node.pulse * 3 + (isHovered ? 2 : 0);
         
-        if (distance < 200) {
-          const force = (200 - distance) / 200;
-          node.vx += (dx / distance) * force * 0.005;
-          node.vy += (dy / distance) * force * 0.005;
-        }
-
-        // Update position with data flow
-        node.x += node.vx + Math.sin(time + node.y * 0.01) * 0.3;
-        node.y += node.vy + Math.cos(time + node.x * 0.01) * 0.3;
-        
-        // Update pulse
-        node.pulsePhase += 0.03;
-        const pulseSize = node.size + Math.sin(node.pulsePhase) * 2;
-
-        // Boundaries
-        if (node.x < 0) node.x = canvas.width;
-        if (node.x > canvas.width) node.x = 0;
-        if (node.y < 0) node.y = canvas.height;
-        if (node.y > canvas.height) node.y = 0;
-
-        // Draw data node with glow
-        ctx.shadowBlur = 15;
-        ctx.shadowColor = node.color + '0.8)';
+        ctx.shadowBlur = 15 + node.pulse * 10;
+        ctx.shadowColor = continentColors[node.continent] + '0.8)';
         ctx.beginPath();
-        ctx.arc(node.x, node.y, pulseSize, 0, Math.PI * 2);
-        ctx.fillStyle = node.color + node.opacity + ')';
+        ctx.arc(node.x, node.y, nodeSize, 0, Math.PI * 2);
+        ctx.fillStyle = continentColors[node.continent] + (0.8 + node.pulse * 0.2) + ')';
         ctx.fill();
         
-        // Draw data type label
+        // Inner core
         ctx.shadowBlur = 0;
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, nodeSize * 0.5, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+        ctx.fill();
+
+        // Show city name and data type on hover
+        if (isHovered) {
+          ctx.font = '12px monospace';
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+          ctx.textAlign = 'center';
+          ctx.fillText(node.name, node.x, node.y - nodeSize - 15);
+          ctx.fillText(node.dataType, node.x, node.y - nodeSize - 5);
+        }
+      });
+
+      // Create new data packets
+      createDataPacket();
+
+      // Update and draw data packets
+      dataPackets.forEach((packet, index) => {
+        packet.progress += packet.speed;
+        
+        if (packet.progress >= 1) {
+          dataPackets.splice(index, 1);
+          return;
+        }
+
+        // Interpolate position
+        packet.x = packet.x + (packet.targetX - packet.x) * packet.speed * 20;
+        packet.y = packet.y + (packet.targetY - packet.y) * packet.speed * 20;
+
+        // Draw packet
+        ctx.beginPath();
+        ctx.arc(packet.x, packet.y, 3, 0, Math.PI * 2);
+        ctx.fillStyle = packet.color + (1 - packet.progress) + ')';
+        ctx.fill();
+
+        // Draw data label
         ctx.font = '10px monospace';
-        ctx.fillStyle = node.color + '0.7)';
+        ctx.fillStyle = packet.color + (0.8 - packet.progress * 0.5) + ')';
         ctx.textAlign = 'center';
-        ctx.fillText(node.dataType, node.x, node.y - pulseSize - 5);
-
-        // Draw connections between nearby nodes
-        dataNodes.slice(index + 1).forEach(otherNode => {
-          const dx = node.x - otherNode.x;
-          const dy = node.y - otherNode.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-
-          if (distance < 150) {
-            const opacity = 0.4 * (1 - distance / 150);
-            ctx.beginPath();
-            ctx.moveTo(node.x, node.y);
-            ctx.lineTo(otherNode.x, otherNode.y);
-            ctx.strokeStyle = node.color + opacity + ')';
-            ctx.lineWidth = 1 + Math.sin(time * 3) * 0.5;
-            ctx.stroke();
-
-            // Data flow particles along connections
-            if (Math.random() < 0.02) {
-              const flowX = node.x + (otherNode.x - node.x) * Math.random();
-              const flowY = node.y + (otherNode.y - node.y) * Math.random();
-              ctx.beginPath();
-              ctx.arc(flowX, flowY, 2, 0, Math.PI * 2);
-              ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-              ctx.fill();
-            }
-          }
-        });
+        ctx.fillText(packet.data, packet.x, packet.y - 8);
       });
 
-      // Update and draw code rain
-      codeRain.forEach(rain => {
-        rain.y += rain.speed;
-        
-        if (rain.y > canvas.height + 100) {
-          rain.y = -100;
-          rain.x = Math.random() * canvas.width;
-        }
-
-        // Draw code characters
-        ctx.font = '12px monospace';
-        ctx.textAlign = 'center';
-        rain.chars.forEach((char, index) => {
-          const charY = rain.y + index * 15;
-          const alpha = Math.max(0, rain.opacity - (index * 0.1));
-          ctx.fillStyle = rain.color + alpha + ')';
-          ctx.fillText(char, rain.x, charY);
-          
-          // Add glow effect to some characters
-          if (Math.random() < 0.1) {
-            ctx.shadowBlur = 10;
-            ctx.shadowColor = rain.color + '0.8)';
-            ctx.fillText(char, rain.x, charY);
-            ctx.shadowBlur = 0;
-          }
-        });
-      });
-
-      // Update and draw floating charts
-      floatingCharts.forEach(chart => {
-        chart.x += chart.vx;
-        chart.y += chart.vy;
-        chart.rotation += chart.rotationSpeed;
-        
-        // Boundaries
-        if (chart.x < -50) chart.x = canvas.width + 50;
-        if (chart.x > canvas.width + 50) chart.x = -50;
-        if (chart.y < -50) chart.y = canvas.height + 50;
-        if (chart.y > canvas.height + 50) chart.y = -50;
-
-        // Animate chart data
-        if (Math.random() < 0.01) {
-          chart.data = chart.data.map(() => Math.random());
-        }
-
-        drawChart(chart);
-      });
-
-      // Update and draw binary streams
-      binaryStreams.forEach(stream => {
-        stream.x += stream.vx;
-        stream.y += stream.vy;
-        
-        // Boundaries
-        if (stream.x < -stream.length) stream.x = canvas.width + stream.length;
-        if (stream.x > canvas.width + stream.length) stream.x = -stream.length;
-        if (stream.y < -20) stream.y = canvas.height + 20;
-        if (stream.y > canvas.height + 20) stream.y = -20;
-
-        // Draw binary stream
-        ctx.font = '10px monospace';
-        ctx.fillStyle = `rgba(34, 197, 94, ${stream.opacity})`;
-        ctx.fillText(stream.binary, stream.x, stream.y);
-
-        // Occasionally update binary
-        if (Math.random() < 0.05) {
-          stream.binary = Array(stream.binary.length).fill(0).map(() => 
-            binaryChars[Math.floor(Math.random() * 2)]
-          ).join('');
-        }
-      });
-
-      // Add data processing indicators
-      if (Math.random() < 0.1) {
+      // Add real-time data indicators
+      if (Math.random() < 0.05) {
         const x = Math.random() * canvas.width;
         const y = Math.random() * canvas.height;
-        const indicators = ['Processing...', 'Analyzing...', 'Computing...', 'Learning...', 'Predicting...'];
+        const indicators = ['Processing', 'Analyzing', 'Computing', 'Learning', 'Predicting'];
         const indicator = indicators[Math.floor(Math.random() * indicators.length)];
         
-        ctx.font = '14px monospace';
-        ctx.fillStyle = 'rgba(168, 85, 247, 0.6)';
-        ctx.fillText(indicator, x, y);
+        ctx.font = '10px monospace';
+        ctx.fillStyle = 'rgba(168, 85, 247, 0.4)';
+        ctx.fillText(indicator + '...', x, y);
       }
 
       requestAnimationFrame(animate);
