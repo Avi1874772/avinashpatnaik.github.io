@@ -19,41 +19,81 @@ const ParticleBackground = () => {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // World map coordinates (simplified major cities)
-    const worldCities = [
-      { name: 'New York', x: 0.25, y: 0.35, continent: 'NA' },
-      { name: 'London', x: 0.48, y: 0.32, continent: 'EU' },
-      { name: 'Paris', x: 0.49, y: 0.34, continent: 'EU' },
-      { name: 'Rome', x: 0.51, y: 0.38, continent: 'EU' },
-      { name: 'Tokyo', x: 0.85, y: 0.4, continent: 'AS' },
-      { name: 'Sydney', x: 0.9, y: 0.75, continent: 'OC' },
-      { name: 'Mumbai', x: 0.72, y: 0.45, continent: 'AS' },
-      { name: 'São Paulo', x: 0.32, y: 0.65, continent: 'SA' },
-      { name: 'Cairo', x: 0.54, y: 0.42, continent: 'AF' },
-      { name: 'Dubai', x: 0.62, y: 0.43, continent: 'AS' },
-      { name: 'Singapore', x: 0.78, y: 0.55, continent: 'AS' },
-      { name: 'Toronto', x: 0.22, y: 0.32, continent: 'NA' },
-      { name: 'Berlin', x: 0.51, y: 0.31, continent: 'EU' },
-      { name: 'Moscow', x: 0.58, y: 0.28, continent: 'EU' },
-      { name: 'Beijing', x: 0.82, y: 0.35, continent: 'AS' },
-      { name: 'Seoul', x: 0.86, y: 0.37, continent: 'AS' },
-      { name: 'Los Angeles', x: 0.15, y: 0.42, continent: 'NA' },
-      { name: 'Mexico City', x: 0.18, y: 0.45, continent: 'NA' },
-      { name: 'Lagos', x: 0.50, y: 0.55, continent: 'AF' },
-      { name: 'Cape Town', x: 0.52, y: 0.72, continent: 'AF' }
+    // World map outline coordinates (simplified continental outlines)
+    const worldMapOutline = [
+      // North America
+      { x: 0.15, y: 0.25 }, { x: 0.18, y: 0.22 }, { x: 0.25, y: 0.20 }, { x: 0.30, y: 0.25 },
+      { x: 0.32, y: 0.30 }, { x: 0.28, y: 0.35 }, { x: 0.25, y: 0.40 }, { x: 0.20, y: 0.45 },
+      { x: 0.15, y: 0.42 }, { x: 0.12, y: 0.38 }, { x: 0.10, y: 0.32 }, { x: 0.15, y: 0.25 },
+      
+      // South America
+      { x: 0.25, y: 0.50 }, { x: 0.28, y: 0.48 }, { x: 0.32, y: 0.52 }, { x: 0.35, y: 0.60 },
+      { x: 0.33, y: 0.70 }, { x: 0.30, y: 0.75 }, { x: 0.26, y: 0.72 }, { x: 0.22, y: 0.65 },
+      { x: 0.20, y: 0.55 }, { x: 0.25, y: 0.50 },
+      
+      // Europe
+      { x: 0.45, y: 0.22 }, { x: 0.50, y: 0.20 }, { x: 0.55, y: 0.25 }, { x: 0.52, y: 0.30 },
+      { x: 0.48, y: 0.32 }, { x: 0.45, y: 0.28 }, { x: 0.45, y: 0.22 },
+      
+      // Africa
+      { x: 0.45, y: 0.35 }, { x: 0.50, y: 0.33 }, { x: 0.55, y: 0.38 }, { x: 0.58, y: 0.45 },
+      { x: 0.56, y: 0.55 }, { x: 0.52, y: 0.65 }, { x: 0.48, y: 0.70 }, { x: 0.45, y: 0.68 },
+      { x: 0.42, y: 0.60 }, { x: 0.40, y: 0.50 }, { x: 0.43, y: 0.40 }, { x: 0.45, y: 0.35 },
+      
+      // Asia
+      { x: 0.60, y: 0.20 }, { x: 0.70, y: 0.18 }, { x: 0.80, y: 0.22 }, { x: 0.85, y: 0.28 },
+      { x: 0.82, y: 0.35 }, { x: 0.75, y: 0.40 }, { x: 0.70, y: 0.45 }, { x: 0.65, y: 0.42 },
+      { x: 0.60, y: 0.38 }, { x: 0.58, y: 0.30 }, { x: 0.60, y: 0.20 },
+      
+      // Australia
+      { x: 0.85, y: 0.65 }, { x: 0.90, y: 0.63 }, { x: 0.93, y: 0.68 }, { x: 0.90, y: 0.72 },
+      { x: 0.85, y: 0.70 }, { x: 0.85, y: 0.65 }
     ];
 
-    // Data nodes based on world cities
+    // Enhanced world cities for data nodes
+    const worldCities = [
+      { name: 'New York', x: 0.25, y: 0.35, continent: 'NA', type: 'Financial' },
+      { name: 'London', x: 0.48, y: 0.32, continent: 'EU', type: 'Financial' },
+      { name: 'Paris', x: 0.49, y: 0.34, continent: 'EU', type: 'Research' },
+      { name: 'Rome', x: 0.51, y: 0.38, continent: 'EU', type: 'Cultural' },
+      { name: 'Tokyo', x: 0.85, y: 0.4, continent: 'AS', type: 'Tech' },
+      { name: 'Sydney', x: 0.9, y: 0.75, continent: 'OC', type: 'Mining' },
+      { name: 'Mumbai', x: 0.72, y: 0.45, continent: 'AS', type: 'Tech' },
+      { name: 'São Paulo', x: 0.32, y: 0.65, continent: 'SA', type: 'Industrial' },
+      { name: 'Cairo', x: 0.54, y: 0.42, continent: 'AF', type: 'Historical' },
+      { name: 'Dubai', x: 0.62, y: 0.43, continent: 'AS', type: 'Trade' },
+      { name: 'Singapore', x: 0.78, y: 0.55, continent: 'AS', type: 'Finance' },
+      { name: 'Toronto', x: 0.22, y: 0.32, continent: 'NA', type: 'Finance' },
+      { name: 'Berlin', x: 0.51, y: 0.31, continent: 'EU', type: 'Tech' },
+      { name: 'Moscow', x: 0.58, y: 0.28, continent: 'EU', type: 'Energy' },
+      { name: 'Beijing', x: 0.82, y: 0.35, continent: 'AS', type: 'Tech' },
+      { name: 'Seoul', x: 0.86, y: 0.37, continent: 'AS', type: 'Tech' },
+      { name: 'Los Angeles', x: 0.15, y: 0.42, continent: 'NA', type: 'Media' },
+      { name: 'Mexico City', x: 0.18, y: 0.45, continent: 'NA', type: 'Manufacturing' },
+      { name: 'Lagos', x: 0.50, y: 0.55, continent: 'AF', type: 'Oil' },
+      { name: 'Cape Town', x: 0.52, y: 0.72, continent: 'AF', type: 'Mining' },
+      { name: 'San Francisco', x: 0.12, y: 0.38, continent: 'NA', type: 'Tech' },
+      { name: 'Boston', x: 0.27, y: 0.33, continent: 'NA', type: 'Research' },
+      { name: 'Frankfurt', x: 0.50, y: 0.30, continent: 'EU', type: 'Finance' },
+      { name: 'Amsterdam', x: 0.49, y: 0.29, continent: 'EU', type: 'Trade' },
+      { name: 'Hong Kong', x: 0.82, y: 0.43, continent: 'AS', type: 'Finance' },
+      { name: 'Bangalore', x: 0.75, y: 0.48, continent: 'AS', type: 'Tech' },
+      { name: 'Tel Aviv', x: 0.56, y: 0.40, continent: 'AS', type: 'Tech' },
+      { name: 'Stockholm', x: 0.52, y: 0.26, continent: 'EU', type: 'Tech' }
+    ];
+
+    // Data nodes with enhanced connectivity
     const dataNodes: Array<{
       x: number;
       y: number;
       name: string;
       continent: string;
+      type: string;
       pulse: number;
       connections: number[];
       dataActivity: number;
-      dataType: string;
       lastPulse: number;
+      importance: number;
     }> = [];
 
     // Initialize data nodes
@@ -63,32 +103,41 @@ const ParticleBackground = () => {
         y: city.y * canvas.height,
         name: city.name,
         continent: city.continent,
+        type: city.type,
         pulse: 0,
         connections: [],
         dataActivity: Math.random(),
-        dataType: ['ML', 'AI', 'Analytics', 'BigData', 'IoT'][Math.floor(Math.random() * 5)],
-        lastPulse: Date.now() + Math.random() * 5000
+        lastPulse: Date.now() + Math.random() * 5000,
+        importance: city.type === 'Tech' ? 0.8 : city.type === 'Finance' ? 0.7 : 0.5
       });
     });
 
-    // Create connections between nodes
+    // Create highly connected network (each node connected to 4-8 others)
     dataNodes.forEach((node, index) => {
-      // Connect to 2-4 random other nodes
-      const connectionCount = Math.floor(Math.random() * 3) + 2;
-      const possibleConnections = dataNodes
-        .map((_, i) => i)
-        .filter(i => i !== index);
-      
-      for (let i = 0; i < connectionCount && possibleConnections.length > 0; i++) {
-        const randomIndex = Math.floor(Math.random() * possibleConnections.length);
-        const connectionIndex = possibleConnections.splice(randomIndex, 1)[0];
-        if (!node.connections.includes(connectionIndex)) {
-          node.connections.push(connectionIndex);
+      const connectionCount = Math.floor(Math.random() * 5) + 4; // 4-8 connections
+      const distances = dataNodes
+        .map((otherNode, otherIndex) => ({
+          index: otherIndex,
+          distance: Math.sqrt(
+            Math.pow(node.x - otherNode.x, 2) + Math.pow(node.y - otherNode.y, 2)
+          )
+        }))
+        .filter(item => item.index !== index)
+        .sort((a, b) => a.distance - b.distance);
+
+      // Connect to closest nodes and some random distant ones for global connectivity
+      for (let i = 0; i < connectionCount && i < distances.length; i++) {
+        const targetIndex = i < connectionCount / 2 
+          ? distances[i].index // Close connections
+          : distances[Math.floor(Math.random() * distances.length)].index; // Random distant connections
+        
+        if (!node.connections.includes(targetIndex)) {
+          node.connections.push(targetIndex);
         }
       }
     });
 
-    // Floating data packets
+    // Data packets
     const dataPackets: Array<{
       x: number;
       y: number;
@@ -100,59 +149,18 @@ const ParticleBackground = () => {
       toNode: number;
       data: string;
       color: string;
+      size: number;
     }> = [];
 
-    // Digital grid lines
-    const gridLines: Array<{
-      x1: number;
-      y1: number;
-      x2: number;
-      y2: number;
-      opacity: number;
-      type: 'lat' | 'lng';
-    }> = [];
-
-    // Create grid lines
-    for (let i = 0; i < 12; i++) {
-      // Latitude lines
-      gridLines.push({
-        x1: 0,
-        y1: (i / 11) * canvas.height,
-        x2: canvas.width,
-        y2: (i / 11) * canvas.height,
-        opacity: 0.1 + Math.random() * 0.1,
-        type: 'lat'
-      });
-    }
-
-    for (let i = 0; i < 24; i++) {
-      // Longitude lines (curved)
-      gridLines.push({
-        x1: (i / 23) * canvas.width,
-        y1: 0,
-        x2: (i / 23) * canvas.width,
-        y2: canvas.height,
-        opacity: 0.1 + Math.random() * 0.1,
-        type: 'lng'
-      });
-    }
-
-    // Satellite traces
-    const satellites: Array<{
-      angle: number;
-      radius: number;
-      speed: number;
-      trail: Array<{ x: number; y: number; opacity: number }>;
-    }> = [];
-
-    for (let i = 0; i < 3; i++) {
-      satellites.push({
-        angle: Math.random() * Math.PI * 2,
-        radius: 100 + Math.random() * 200,
-        speed: 0.005 + Math.random() * 0.01,
-        trail: []
-      });
-    }
+    // Continental color scheme
+    const continentColors = {
+      'NA': 'rgba(59, 130, 246, ',    // Blue
+      'EU': 'rgba(34, 197, 94, ',     // Green
+      'AS': 'rgba(168, 85, 247, ',    // Purple
+      'AF': 'rgba(249, 115, 22, ',    // Orange
+      'SA': 'rgba(236, 72, 153, ',    // Pink
+      'OC': 'rgba(14, 165, 233, '     // Sky blue
+    };
 
     let time = 0;
     let mouseX = 0;
@@ -165,17 +173,8 @@ const ParticleBackground = () => {
 
     window.addEventListener('mousemove', handleMouseMove);
 
-    const continentColors = {
-      'NA': 'rgba(59, 130, 246, ',    // Blue
-      'EU': 'rgba(34, 197, 94, ',     // Green
-      'AS': 'rgba(168, 85, 247, ',    // Purple
-      'AF': 'rgba(249, 115, 22, ',    // Orange
-      'SA': 'rgba(236, 72, 153, ',    // Pink
-      'OC': 'rgba(14, 165, 233, '     // Sky blue
-    };
-
     const createDataPacket = () => {
-      if (dataPackets.length < 15 && Math.random() < 0.02) {
+      if (dataPackets.length < 25 && Math.random() < 0.05) {
         const fromIndex = Math.floor(Math.random() * dataNodes.length);
         const fromNode = dataNodes[fromIndex];
         
@@ -183,17 +182,20 @@ const ParticleBackground = () => {
           const toIndex = fromNode.connections[Math.floor(Math.random() * fromNode.connections.length)];
           const toNode = dataNodes[toIndex];
           
+          const dataTypes = ['ML Model', 'Dataset', 'Analytics', 'Prediction', 'Insights', 'Algorithm', 'Query', 'Report'];
+          
           dataPackets.push({
             x: fromNode.x,
             y: fromNode.y,
             targetX: toNode.x,
             targetY: toNode.y,
             progress: 0,
-            speed: 0.005 + Math.random() * 0.01,
+            speed: 0.003 + Math.random() * 0.007,
             fromNode: fromIndex,
             toNode: toIndex,
-            data: ['JSON', 'CSV', 'API', 'ML', 'AI'][Math.floor(Math.random() * 5)],
-            color: continentColors[fromNode.continent] || 'rgba(255, 255, 255, '
+            data: dataTypes[Math.floor(Math.random() * dataTypes.length)],
+            color: continentColors[fromNode.continent] || 'rgba(255, 255, 255, ',
+            size: 2 + Math.random() * 2
           });
         }
       }
@@ -202,7 +204,7 @@ const ParticleBackground = () => {
     const animate = () => {
       time += 0.01;
       
-      // Create elegant gradient background
+      // Create deep space gradient background
       const gradient = ctx.createRadialGradient(
         canvas.width / 2, canvas.height / 2, 0,
         canvas.width / 2, canvas.height / 2, Math.max(canvas.width, canvas.height)
@@ -213,127 +215,122 @@ const ParticleBackground = () => {
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Draw grid lines with subtle animation
-      gridLines.forEach(line => {
-        ctx.strokeStyle = `rgba(100, 116, 139, ${line.opacity + Math.sin(time * 2) * 0.05})`;
+      // Draw world map outline
+      ctx.strokeStyle = 'rgba(100, 116, 139, 0.3)';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      
+      worldMapOutline.forEach((point, index) => {
+        const x = point.x * canvas.width;
+        const y = point.y * canvas.height;
+        
+        if (index === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+      });
+      ctx.stroke();
+
+      // Draw continental grid lines
+      for (let i = 0; i < 8; i++) {
+        const opacity = 0.1 + Math.sin(time * 2 + i) * 0.05;
+        ctx.strokeStyle = `rgba(100, 116, 139, ${opacity})`;
         ctx.lineWidth = 0.5;
         ctx.beginPath();
-        
-        if (line.type === 'lat') {
-          ctx.moveTo(line.x1, line.y1);
-          ctx.lineTo(line.x2, line.y2);
-        } else {
-          // Curved longitude lines
-          const midY = canvas.height / 2;
-          const curve = Math.sin((line.x1 / canvas.width) * Math.PI) * 50;
-          ctx.moveTo(line.x1, 0);
-          ctx.quadraticCurveTo(line.x1 + curve, midY, line.x1, canvas.height);
-        }
+        ctx.moveTo(0, (i / 7) * canvas.height);
+        ctx.lineTo(canvas.width, (i / 7) * canvas.height);
         ctx.stroke();
-      });
+      }
 
-      // Update and draw satellites
-      satellites.forEach(satellite => {
-        satellite.angle += satellite.speed;
-        const centerX = canvas.width / 2;
-        const centerY = canvas.height / 2;
-        const x = centerX + Math.cos(satellite.angle) * satellite.radius;
-        const y = centerY + Math.sin(satellite.angle) * satellite.radius * 0.3;
-
-        // Add to trail
-        satellite.trail.push({ x, y, opacity: 1 });
-        if (satellite.trail.length > 20) {
-          satellite.trail.shift();
-        }
-
-        // Draw trail
-        satellite.trail.forEach((point, index) => {
-          const opacity = (index / satellite.trail.length) * 0.5;
-          ctx.beginPath();
-          ctx.arc(point.x, point.y, 1, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(14, 165, 233, ${opacity})`;
-          ctx.fill();
-        });
-
-        // Draw satellite
+      for (let i = 0; i < 12; i++) {
+        const opacity = 0.1 + Math.sin(time * 1.5 + i) * 0.05;
+        ctx.strokeStyle = `rgba(100, 116, 139, ${opacity})`;
+        ctx.lineWidth = 0.5;
         ctx.beginPath();
-        ctx.arc(x, y, 3, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(14, 165, 233, 0.8)';
-        ctx.fill();
-      });
+        ctx.moveTo((i / 11) * canvas.width, 0);
+        ctx.lineTo((i / 11) * canvas.width, canvas.height);
+        ctx.stroke();
+      }
 
       // Update and draw data nodes
       dataNodes.forEach((node, index) => {
-        // Update pulse
+        // Update pulse based on importance
         const now = Date.now();
-        if (now - node.lastPulse > 3000 + Math.random() * 2000) {
+        const pulseInterval = 2000 - (node.importance * 1000);
+        if (now - node.lastPulse > pulseInterval) {
           node.pulse = 1;
           node.lastPulse = now;
         }
-        node.pulse *= 0.95;
+        node.pulse *= 0.92;
 
         // Mouse interaction
         const dx = mouseX - node.x;
         const dy = mouseY - node.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
-        const isHovered = distance < 100;
+        const isHovered = distance < 80;
 
-        // Draw node connections
+        // Draw enhanced connections
         node.connections.forEach(connectionIndex => {
           const targetNode = dataNodes[connectionIndex];
-          const connectionOpacity = 0.2 + (isHovered ? 0.3 : 0) + Math.sin(time * 3 + index) * 0.1;
+          const connectionStrength = (node.importance + targetNode.importance) / 2;
+          const baseOpacity = 0.2 + connectionStrength * 0.3;
+          const animatedOpacity = baseOpacity + Math.sin(time * 3 + index) * 0.1;
+          const finalOpacity = animatedOpacity + (isHovered ? 0.4 : 0);
           
-          ctx.strokeStyle = continentColors[node.continent] + connectionOpacity + ')';
-          ctx.lineWidth = 1 + (isHovered ? 1 : 0);
+          ctx.strokeStyle = continentColors[node.continent] + finalOpacity + ')';
+          ctx.lineWidth = 1 + connectionStrength * 2 + (isHovered ? 1 : 0);
           ctx.beginPath();
           ctx.moveTo(node.x, node.y);
           ctx.lineTo(targetNode.x, targetNode.y);
           ctx.stroke();
 
-          // Data flow indicators
-          if (Math.random() < 0.01) {
+          // Data flow pulses along connections
+          if (Math.random() < 0.02 * connectionStrength) {
             const flowProgress = Math.random();
             const flowX = node.x + (targetNode.x - node.x) * flowProgress;
             const flowY = node.y + (targetNode.y - node.y) * flowProgress;
             
             ctx.beginPath();
-            ctx.arc(flowX, flowY, 2, 0, Math.PI * 2);
-            ctx.fillStyle = continentColors[node.continent] + '0.8)';
+            ctx.arc(flowX, flowY, 1.5, 0, Math.PI * 2);
+            ctx.fillStyle = continentColors[node.continent] + '0.9)';
             ctx.fill();
           }
         });
 
-        // Draw node with glow effect
-        const nodeSize = 4 + node.pulse * 3 + (isHovered ? 2 : 0);
+        // Draw enhanced nodes
+        const baseSize = 3 + node.importance * 4;
+        const nodeSize = baseSize + node.pulse * 4 + (isHovered ? 3 : 0);
         
-        ctx.shadowBlur = 15 + node.pulse * 10;
+        // Outer glow
+        ctx.shadowBlur = 20 + node.pulse * 15 + node.importance * 10;
         ctx.shadowColor = continentColors[node.continent] + '0.8)';
         ctx.beginPath();
         ctx.arc(node.x, node.y, nodeSize, 0, Math.PI * 2);
-        ctx.fillStyle = continentColors[node.continent] + (0.8 + node.pulse * 0.2) + ')';
+        ctx.fillStyle = continentColors[node.continent] + (0.6 + node.pulse * 0.3 + node.importance * 0.2) + ')';
         ctx.fill();
         
         // Inner core
         ctx.shadowBlur = 0;
         ctx.beginPath();
-        ctx.arc(node.x, node.y, nodeSize * 0.5, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+        ctx.arc(node.x, node.y, nodeSize * 0.4, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
         ctx.fill();
 
-        // Show city name and data type on hover
+        // Data type indicator
         if (isHovered) {
-          ctx.font = '12px monospace';
-          ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+          ctx.font = 'bold 11px monospace';
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
           ctx.textAlign = 'center';
-          ctx.fillText(node.name, node.x, node.y - nodeSize - 15);
-          ctx.fillText(node.dataType, node.x, node.y - nodeSize - 5);
+          ctx.fillText(node.name, node.x, node.y - nodeSize - 20);
+          ctx.font = '9px monospace';
+          ctx.fillStyle = continentColors[node.continent] + '0.9)';
+          ctx.fillText(`${node.type} Hub`, node.x, node.y - nodeSize - 8);
         }
       });
 
-      // Create new data packets
+      // Create and update data packets
       createDataPacket();
-
-      // Update and draw data packets
       dataPackets.forEach((packet, index) => {
         packet.progress += packet.speed;
         
@@ -342,33 +339,37 @@ const ParticleBackground = () => {
           return;
         }
 
-        // Interpolate position
-        packet.x = packet.x + (packet.targetX - packet.x) * packet.speed * 20;
-        packet.y = packet.y + (packet.targetY - packet.y) * packet.speed * 20;
+        // Smooth interpolation
+        packet.x = packet.x + (packet.targetX - packet.x) * packet.speed * 15;
+        packet.y = packet.y + (packet.targetY - packet.y) * packet.speed * 15;
 
-        // Draw packet
+        // Draw packet with trail effect
+        const alpha = 1 - packet.progress * 0.5;
         ctx.beginPath();
-        ctx.arc(packet.x, packet.y, 3, 0, Math.PI * 2);
-        ctx.fillStyle = packet.color + (1 - packet.progress) + ')';
+        ctx.arc(packet.x, packet.y, packet.size, 0, Math.PI * 2);
+        ctx.fillStyle = packet.color + alpha + ')';
         ctx.fill();
 
-        // Draw data label
-        ctx.font = '10px monospace';
-        ctx.fillStyle = packet.color + (0.8 - packet.progress * 0.5) + ')';
-        ctx.textAlign = 'center';
-        ctx.fillText(packet.data, packet.x, packet.y - 8);
+        // Data label
+        if (packet.progress < 0.8) {
+          ctx.font = '8px monospace';
+          ctx.fillStyle = packet.color + (alpha * 0.7) + ')';
+          ctx.textAlign = 'center';
+          ctx.fillText(packet.data, packet.x, packet.y - packet.size - 3);
+        }
       });
 
-      // Add real-time data indicators
-      if (Math.random() < 0.05) {
+      // Real-time data analytics indicators
+      if (Math.random() < 0.03) {
         const x = Math.random() * canvas.width;
         const y = Math.random() * canvas.height;
-        const indicators = ['Processing', 'Analyzing', 'Computing', 'Learning', 'Predicting'];
+        const indicators = ['Processing...', 'Analyzing...', 'Computing...', 'Learning...', 'Predicting...', 'Optimizing...'];
         const indicator = indicators[Math.floor(Math.random() * indicators.length)];
         
-        ctx.font = '10px monospace';
+        ctx.font = '9px monospace';
         ctx.fillStyle = 'rgba(168, 85, 247, 0.4)';
-        ctx.fillText(indicator + '...', x, y);
+        ctx.textAlign = 'left';
+        ctx.fillText(indicator, x, y);
       }
 
       requestAnimationFrame(animate);
