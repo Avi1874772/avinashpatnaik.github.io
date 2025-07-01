@@ -157,7 +157,7 @@ const Skills = () => {
         { 
           name: 'Financial Analytics', 
           details: 'Risk modeling, fraud detection, algorithmic trading, fintech',
-          expertise: 'Advanced'
+          expertise: 'Expert'
         },
         { 
           name: 'Healthcare & Biotech', 
@@ -167,7 +167,7 @@ const Skills = () => {
         { 
           name: 'E-commerce & Marketing', 
           details: 'Customer segmentation, recommendation systems, attribution',
-          expertise: 'Advanced'
+          expertise: 'Expert'
         },
         { 
           name: 'IoT & Sensors', 
