@@ -27,7 +27,6 @@ const About = () => {
     { icon: Award, label: 'Years Experience', value: '5+', color: 'text-blue-400' },
     { icon: Users, label: 'Projects Completed', value: '50+', color: 'text-green-400' },
     { icon: TrendingUp, label: 'Models Deployed', value: '25+', color: 'text-purple-400' },
-    { icon: Database, label: 'Data Points Analyzed', value: '1M+', color: 'text-pink-400' },
   ];
 
   return (
