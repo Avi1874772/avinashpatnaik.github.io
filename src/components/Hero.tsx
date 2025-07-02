@@ -100,14 +100,11 @@ const Hero: React.FC<HeroProps> = ({ scrollY }) => {
               </p>
             </div>
             
-            {/* Main name with multiple animations */}
+            {/* Main name with multiple animations - removed underline */}
             <div className="relative mb-6">
               <h1 className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-[fadeInScale_1.5s_ease-out] relative z-10">
                 Avinash Patnaik
               </h1>
-              
-              {/* Animated underline */}
-              <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-1 bg-gradient-to-r from-blue-400 to-purple-400 animate-[expandWidth_2s_ease-out_1s_forwards]"></div>
             </div>
             
             {/* Dynamic typewriter text */}
