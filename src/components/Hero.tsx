@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { ChevronDown, Sparkles, Code, Database } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 interface HeroProps {
   scrollY: number;
@@ -71,19 +71,6 @@ const Hero: React.FC<HeroProps> = ({ scrollY }) => {
 
   return (
     <section id="hero" className="min-h-screen flex items-center justify-center relative overflow-hidden">
-      {/* Floating elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 animate-bounce delay-1000">
-          <Sparkles className="text-purple-400 opacity-30" size={32} />
-        </div>
-        <div className="absolute top-40 right-20 animate-pulse delay-2000">
-          <Code className="text-blue-400 opacity-30" size={28} />
-        </div>
-        <div className="absolute bottom-40 left-20 animate-bounce delay-3000">
-          <Database className="text-pink-400 opacity-30" size={30} />
-        </div>
-      </div>
-
       <div 
         className="text-center z-10 px-6 relative"
         style={{ transform: `translateY(${scrollY * 0.3}px)` }}
@@ -100,7 +87,7 @@ const Hero: React.FC<HeroProps> = ({ scrollY }) => {
               </p>
             </div>
             
-            {/* Main name with multiple animations - removed underline */}
+            {/* Main name with multiple animations */}
             <div className="relative mb-6">
               <h1 className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-[fadeInScale_1.5s_ease-out] relative z-10">
                 Avinash Patnaik
