@@ -91,14 +91,15 @@ const About = () => {
               Passionate About Data-Driven Solutions
             </h3>
             <p className="text-gray-300 text-lg leading-relaxed mb-6">
-              With over 5 years of experience in data science and analytics, I specialize in 
-              extracting meaningful insights from complex datasets. My expertise spans machine 
-              learning, statistical modeling, and data visualization.
+              With over 5 years of experience in data science and analytics, 
+              I am a passionate, data-driven professional specializing in deep learning, 
+              machine learning, statistical modeling, and data visualization.
             </p>
             <p className="text-gray-300 text-lg leading-relaxed mb-6">
-              I've worked with Fortune 500 companies and startups alike, helping them make 
-              data-driven decisions that drive growth and innovation. My approach combines 
-              technical expertise with business acumen to deliver impactful solutions.
+              I am deeply passionate about AI and continuously explore emerging technologies, 
+              including the transformative potential of generative AI. My curiosity and 
+              enthusiasm for innovation drive me to stay at the forefront of the AI landscape, 
+              always looking for new ways to apply intelligent solutions to real-world challenges.
             </p>
             <div className="flex flex-wrap gap-3">
               {['Python', 'SQL', 'Machine Learning', 'Deep Learning', 'Microsoft Power BI', 'Tableau'].map((skill) => (
