@@ -52,7 +52,7 @@ const About = () => {
                 <div className="w-64 h-64 mx-auto rounded-full overflow-hidden border-4 border-gradient-to-r from-blue-400 to-purple-400 p-1">
                   <div className="w-full h-full rounded-full overflow-hidden bg-gradient-to-br from-slate-800 to-slate-900">
                     <img 
-                      src="/avi.jpg" 
+                      src="/avinash.jpg" 
                       alt="Avinash Patnaik - Data Scientist" 
                       className="w-full h-full object-cover"
                     />
