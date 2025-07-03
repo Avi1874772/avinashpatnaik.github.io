@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import { Brain, Database, TrendingUp, Code, Palette, Globe } from 'lucide-react';
 
@@ -273,27 +272,6 @@ const Skills = () => {
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Professional Summary */}
-        <div className={`mt-16 bg-gradient-to-r from-slate-800/30 to-slate-900/30 p-8 rounded-xl border border-slate-700/30 transition-all duration-1000 delay-1000 ${
-          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-        }`}>
-          <h3 className="text-2xl font-bold text-white mb-4 text-center">Professional Impact</h3>
-          <div className="grid md:grid-cols-3 gap-6 text-center">
-            <div>
-              <div className="text-3xl font-bold text-blue-400 mb-2">5+</div>
-              <div className="text-gray-300">Years Experience</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-green-400 mb-2">50+</div>
-              <div className="text-gray-300">ML Models Deployed</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-purple-400 mb-2">$2M+</div>
-              <div className="text-gray-300">Business Value Generated</div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
