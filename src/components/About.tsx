@@ -24,7 +24,7 @@ const About = () => {
   }, []);
 
   const stats = [
-    { icon: Award, label: 'Years Experience', value: '5+', color: 'text-blue-400' },
+    { icon: Award, label: 'Years Experience', value: '4+', color: 'text-blue-400' },
     { icon: Users, label: 'Projects Completed', value: '50+', color: 'text-green-400' },
     { icon: TrendingUp, label: 'Models Deployed', value: '25+', color: 'text-purple-400' },
   ];
@@ -90,7 +90,7 @@ const About = () => {
               Passionate About Data-Driven Solutions
             </h3>
             <p className="text-gray-300 text-lg leading-relaxed mb-6 transform transition-all duration-300 hover:text-gray-200">
-              With over 5 years of experience in data science and analytics, 
+              With over 4 years of experience in data science and analytics, 
               I am a passionate, data-driven professional specializing in deep learning, 
               machine learning, statistical modeling, and data visualization.
             </p>
