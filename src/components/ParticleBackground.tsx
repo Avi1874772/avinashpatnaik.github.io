@@ -18,125 +18,47 @@ const ParticleBackground = () => {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // World map outline coordinates (simplified continental outlines)
-    const worldMapOutline = [
-      // North America
-      { x: 0.12, y: 0.28 }, { x: 0.15, y: 0.22 }, { x: 0.20, y: 0.20 }, { x: 0.28, y: 0.20 }, { x: 0.32, y: 0.25 },
-      { x: 0.34, y: 0.30 }, { x: 0.30, y: 0.38 }, { x: 0.25, y: 0.42 }, { x: 0.20, y: 0.46 }, { x: 0.17, y: 0.44 },
-      { x: 0.14, y: 0.38 }, { x: 0.12, y: 0.32 }, { x: 0.12, y: 0.28 },
-
-      // South America
-      { x: 0.24, y: 0.52 }, { x: 0.28, y: 0.50 }, { x: 0.33, y: 0.54 }, { x: 0.36, y: 0.62 },
-      { x: 0.34, y: 0.72 }, { x: 0.30, y: 0.76 }, { x: 0.26, y: 0.73 }, { x: 0.22, y: 0.66 },
-      { x: 0.20, y: 0.56 }, { x: 0.24, y: 0.52 },
-
-      // Europe
-      { x: 0.44, y: 0.24 }, { x: 0.48, y: 0.21 }, { x: 0.53, y: 0.23 }, { x: 0.55, y: 0.27 },
-      { x: 0.53, y: 0.32 }, { x: 0.49, y: 0.34 }, { x: 0.46, y: 0.30 }, { x: 0.44, y: 0.24 },
-
-      // Africa
-      { x: 0.44, y: 0.36 }, { x: 0.48, y: 0.34 }, { x: 0.54, y: 0.36 }, { x: 0.58, y: 0.44 },
-      { x: 0.56, y: 0.54 }, { x: 0.52, y: 0.64 }, { x: 0.48, y: 0.70 }, { x: 0.45, y: 0.68 },
-      { x: 0.42, y: 0.60 }, { x: 0.40, y: 0.50 }, { x: 0.42, y: 0.42 }, { x: 0.44, y: 0.36 },
-
-      // Asia
-      { x: 0.60, y: 0.22 }, { x: 0.68, y: 0.20 }, { x: 0.78, y: 0.24 }, { x: 0.84, y: 0.30 },
-      { x: 0.82, y: 0.36 }, { x: 0.76, y: 0.40 }, { x: 0.72, y: 0.44 }, { x: 0.66, y: 0.42 },
-      { x: 0.62, y: 0.38 }, { x: 0.60, y: 0.32 }, { x: 0.60, y: 0.22 },
-
-      // Australia
-      { x: 0.84, y: 0.66 }, { x: 0.89, y: 0.64 }, { x: 0.92, y: 0.69 }, { x: 0.89, y: 0.74 },
-      { x: 0.84, y: 0.72 }, { x: 0.84, y: 0.66 }
-    ];
-
-    // Enhanced world cities for data nodes
-    const worldCities = [
-      { name: 'New York', x: 0.26, y: 0.34, continent: 'NA', type: 'Financial' },
-      { name: 'London', x: 0.48, y: 0.29, continent: 'EU', type: 'Financial' },
-      { name: 'Paris', x: 0.49, y: 0.31, continent: 'EU', type: 'Research' },
-      { name: 'Rome', x: 0.51, y: 0.36, continent: 'EU', type: 'Cultural' },
-      { name: 'Tokyo', x: 0.84, y: 0.36, continent: 'AS', type: 'Tech' },
-      { name: 'Sydney', x: 0.89, y: 0.73, continent: 'OC', type: 'Mining' },
-      { name: 'Mumbai', x: 0.71, y: 0.45, continent: 'AS', type: 'Tech' },
-      { name: 'São Paulo', x: 0.30, y: 0.66, continent: 'SA', type: 'Industrial' },
-      { name: 'Cairo', x: 0.52, y: 0.42, continent: 'AF', type: 'Historical' },
-      { name: 'Dubai', x: 0.62, y: 0.43, continent: 'AS', type: 'Trade' },
-      { name: 'Singapore', x: 0.76, y: 0.54, continent: 'AS', type: 'Finance' },
-      { name: 'Toronto', x: 0.22, y: 0.30, continent: 'NA', type: 'Finance' },
-      { name: 'Berlin', x: 0.51, y: 0.30, continent: 'EU', type: 'Tech' },
-      { name: 'Moscow', x: 0.58, y: 0.28, continent: 'EU', type: 'Energy' },
-      { name: 'Beijing', x: 0.80, y: 0.34, continent: 'AS', type: 'Tech' },
-      { name: 'Seoul', x: 0.83, y: 0.35, continent: 'AS', type: 'Tech' },
-      { name: 'Los Angeles', x: 0.16, y: 0.41, continent: 'NA', type: 'Media' },
-      { name: 'Mexico City', x: 0.20, y: 0.45, continent: 'NA', type: 'Manufacturing' },
-      { name: 'Lagos', x: 0.50, y: 0.55, continent: 'AF', type: 'Oil' },
-      { name: 'Cape Town', x: 0.48, y: 0.71, continent: 'AF', type: 'Mining' },
-      { name: 'San Francisco', x: 0.13, y: 0.37, continent: 'NA', type: 'Tech' },
-      { name: 'Boston', x: 0.27, y: 0.32, continent: 'NA', type: 'Research' },
-      { name: 'Frankfurt', x: 0.50, y: 0.29, continent: 'EU', type: 'Finance' },
-      { name: 'Amsterdam', x: 0.48, y: 0.28, continent: 'EU', type: 'Trade' },
-      { name: 'Hong Kong', x: 0.81, y: 0.41, continent: 'AS', type: 'Finance' },
-      { name: 'Bangalore', x: 0.73, y: 0.47, continent: 'AS', type: 'Tech' },
-      { name: 'Tel Aviv', x: 0.58, y: 0.39, continent: 'AS', type: 'Tech' },
-      { name: 'Stockholm', x: 0.52, y: 0.26, continent: 'EU', type: 'Tech' }
-    ];
-
-    // Data nodes with enhanced connectivity
+    // Simple data nodes for digital signals
     const dataNodes: Array<{
       x: number;
       y: number;
-      name: string;
-      continent: string;
-      type: string;
+      vx: number;
+      vy: number;
+      size: number;
       pulse: number;
+      color: string;
       connections: number[];
-      dataActivity: number;
-      lastPulse: number;
-      importance: number;
     }> = [];
 
-    // Initialize data nodes
-    worldCities.forEach((city, index) => {
+    // Create scattered data nodes
+    for (let i = 0; i < 12; i++) {
       dataNodes.push({
-        x: city.x * canvas.width,
-        y: city.y * canvas.height,
-        name: city.name,
-        continent: city.continent,
-        type: city.type,
-        pulse: 0,
-        connections: [],
-        dataActivity: Math.random(),
-        lastPulse: Date.now() + Math.random() * 5000,
-        importance: city.type === 'Tech' ? 0.8 : city.type === 'Finance' ? 0.7 : 0.5
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.5,
+        vy: (Math.random() - 0.5) * 0.5,
+        size: 2 + Math.random() * 3,
+        pulse: Math.random(),
+        color: ['rgba(59, 130, 246, ', 'rgba(168, 85, 247, ', 'rgba(34, 197, 94, '][Math.floor(Math.random() * 3)],
+        connections: []
       });
-    });
+    }
 
-    // Create highly connected network (each node connected to 3-5 others)
+    // Create connections between nearby nodes
     dataNodes.forEach((node, index) => {
-      const connectionCount = Math.floor(Math.random() * 3) + 3; // 3-5 connections
-      const distances = dataNodes
+      const nearbyNodes = dataNodes
         .map((otherNode, otherIndex) => ({
           index: otherIndex,
-          distance: Math.sqrt(
-            Math.pow(node.x - otherNode.x, 2) + Math.pow(node.y - otherNode.y, 2)
-          )
+          distance: Math.sqrt(Math.pow(node.x - otherNode.x, 2) + Math.pow(node.y - otherNode.y, 2))
         }))
-        .filter(item => item.index !== index)
-        .sort((a, b) => a.distance - b.distance);
+        .filter(item => item.index !== index && item.distance < 300)
+        .sort((a, b) => a.distance - b.distance)
+        .slice(0, 3);
 
-      // Connect to closest nodes and some random distant ones for global connectivity
-      for (let i = 0; i < connectionCount && i < distances.length; i++) {
-        const targetIndex = i < connectionCount / 2 
-          ? distances[i].index // Close connections
-          : distances[Math.floor(Math.random() * distances.length)].index; // Random distant connections
-        
-        if (!node.connections.includes(targetIndex)) {
-          node.connections.push(targetIndex);
-        }
-      }
+      node.connections = nearbyNodes.map(n => n.index);
     });
 
-    // Data packets
+    // Data packets for signals
     const dataPackets: Array<{
       x: number;
       y: number;
@@ -144,22 +66,9 @@ const ParticleBackground = () => {
       targetY: number;
       progress: number;
       speed: number;
-      fromNode: number;
-      toNode: number;
-      data: string;
       color: string;
       size: number;
     }> = [];
-
-    // Continental color scheme (reduced opacity)
-    const continentColors = {
-      'NA': 'rgba(59, 130, 246, ',    // Blue
-      'EU': 'rgba(34, 197, 94, ',     // Green
-      'AS': 'rgba(168, 85, 247, ',    // Purple
-      'AF': 'rgba(249, 115, 22, ',    // Orange
-      'SA': 'rgba(236, 72, 153, ',    // Pink
-      'OC': 'rgba(14, 165, 233, '     // Sky blue
-    };
 
     let time = 0;
     let mouseX = 0;
@@ -173,7 +82,7 @@ const ParticleBackground = () => {
     window.addEventListener('mousemove', handleMouseMove);
 
     const createDataPacket = () => {
-      if (dataPackets.length < 15 && Math.random() < 0.03) {
+      if (dataPackets.length < 8 && Math.random() < 0.05) {
         const fromIndex = Math.floor(Math.random() * dataNodes.length);
         const fromNode = dataNodes[fromIndex];
         
@@ -181,20 +90,15 @@ const ParticleBackground = () => {
           const toIndex = fromNode.connections[Math.floor(Math.random() * fromNode.connections.length)];
           const toNode = dataNodes[toIndex];
           
-          const dataTypes = ['ML Model', 'Dataset', 'Analytics', 'Prediction', 'Insights', 'Algorithm', 'Query', 'Report'];
-          
           dataPackets.push({
             x: fromNode.x,
             y: fromNode.y,
             targetX: toNode.x,
             targetY: toNode.y,
             progress: 0,
-            speed: 0.003 + Math.random() * 0.007,
-            fromNode: fromIndex,
-            toNode: toIndex,
-            data: dataTypes[Math.floor(Math.random() * dataTypes.length)],
-            color: continentColors[fromNode.continent] || 'rgba(255, 255, 255, ',
-            size: 1.5 + Math.random() * 1.5
+            speed: 0.005 + Math.random() * 0.01,
+            color: fromNode.color,
+            size: 1.5 + Math.random() * 1
           });
         }
       }
@@ -203,129 +107,98 @@ const ParticleBackground = () => {
     const animate = () => {
       time += 0.01;
       
-      // Create very subtle background gradient
-      const gradient = ctx.createRadialGradient(
-        canvas.width / 2, canvas.height / 2, 0,
-        canvas.width / 2, canvas.height / 2, Math.max(canvas.width, canvas.height)
-      );
-      gradient.addColorStop(0, 'rgba(15, 23, 42, 0.3)');
-      gradient.addColorStop(0.5, 'rgba(30, 41, 59, 0.2)');
-      gradient.addColorStop(1, 'rgba(15, 23, 42, 0.3)');
-      ctx.fillStyle = gradient;
+      // Simple dark background
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.05)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Draw very subtle world map outline
-      ctx.strokeStyle = 'rgba(100, 116, 139, 0.1)';
-      ctx.lineWidth = 0.8;
-      ctx.beginPath();
-      
-      worldMapOutline.forEach((point, index) => {
-        const x = point.x * canvas.width;
-        const y = point.y * canvas.height;
-        
-        if (index === 0) {
-          ctx.moveTo(x, y);
-        } else {
-          ctx.lineTo(x, y);
-        }
-      });
-      ctx.stroke();
-
-      // Draw very subtle continental grid lines
-      for (let i = 0; i < 8; i++) {
-        const opacity = 0.02 + Math.sin(time * 2 + i) * 0.01;
+      // Draw subtle grid lines
+      for (let i = 0; i < 6; i++) {
+        const opacity = 0.03 + Math.sin(time * 1.5 + i) * 0.01;
         ctx.strokeStyle = `rgba(100, 116, 139, ${opacity})`;
-        ctx.lineWidth = 0.3;
+        ctx.lineWidth = 0.5;
         ctx.beginPath();
-        ctx.moveTo(0, (i / 7) * canvas.height);
-        ctx.lineTo(canvas.width, (i / 7) * canvas.height);
+        ctx.moveTo(0, (i / 5) * canvas.height);
+        ctx.lineTo(canvas.width, (i / 5) * canvas.height);
         ctx.stroke();
       }
 
-      for (let i = 0; i < 12; i++) {
-        const opacity = 0.02 + Math.sin(time * 1.5 + i) * 0.01;
+      for (let i = 0; i < 8; i++) {
+        const opacity = 0.03 + Math.sin(time * 1.2 + i) * 0.01;
         ctx.strokeStyle = `rgba(100, 116, 139, ${opacity})`;
-        ctx.lineWidth = 0.3;
+        ctx.lineWidth = 0.5;
         ctx.beginPath();
-        ctx.moveTo((i / 11) * canvas.width, 0);
-        ctx.lineTo((i / 11) * canvas.width, canvas.height);
+        ctx.moveTo((i / 7) * canvas.width, 0);
+        ctx.lineTo((i / 7) * canvas.width, canvas.height);
         ctx.stroke();
       }
 
       // Update and draw data nodes
       dataNodes.forEach((node, index) => {
-        // Update pulse based on importance
-        const now = Date.now();
-        const pulseInterval = 3000 - (node.importance * 1000);
-        if (now - node.lastPulse > pulseInterval) {
-          node.pulse = 1;
-          node.lastPulse = now;
-        }
-        node.pulse *= 0.95;
+        // Update node position with slow drift
+        node.x += node.vx;
+        node.y += node.vy;
+        
+        // Bounce off edges
+        if (node.x < 0 || node.x > canvas.width) node.vx *= -1;
+        if (node.y < 0 || node.y > canvas.height) node.vy *= -1;
+        
+        // Keep nodes in bounds
+        node.x = Math.max(0, Math.min(canvas.width, node.x));
+        node.y = Math.max(0, Math.min(canvas.height, node.y));
+
+        // Update pulse
+        node.pulse = 0.5 + Math.sin(time * 2 + index) * 0.3;
 
         // Mouse interaction
         const dx = mouseX - node.x;
         const dy = mouseY - node.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
-        const isHovered = distance < 60;
+        const isHovered = distance < 80;
 
-        // Draw subtle connections
+        // Draw connections
         node.connections.forEach(connectionIndex => {
           const targetNode = dataNodes[connectionIndex];
-          const connectionStrength = (node.importance + targetNode.importance) / 2;
-          const baseOpacity = 0.05 + connectionStrength * 0.1;
-          const animatedOpacity = baseOpacity + Math.sin(time * 2 + index) * 0.02;
-          const finalOpacity = animatedOpacity + (isHovered ? 0.15 : 0);
+          const baseOpacity = 0.1;
+          const animatedOpacity = baseOpacity + Math.sin(time * 1.5 + index) * 0.05;
+          const finalOpacity = animatedOpacity + (isHovered ? 0.2 : 0);
           
-          ctx.strokeStyle = continentColors[node.continent] + finalOpacity + ')';
-          ctx.lineWidth = 0.5 + connectionStrength * 0.5 + (isHovered ? 0.5 : 0);
+          ctx.strokeStyle = node.color + finalOpacity + ')';
+          ctx.lineWidth = 1 + (isHovered ? 1 : 0);
           ctx.beginPath();
           ctx.moveTo(node.x, node.y);
           ctx.lineTo(targetNode.x, targetNode.y);
           ctx.stroke();
 
           // Data flow pulses along connections
-          if (Math.random() < 0.01 * connectionStrength) {
+          if (Math.random() < 0.02) {
             const flowProgress = Math.random();
             const flowX = node.x + (targetNode.x - node.x) * flowProgress;
             const flowY = node.y + (targetNode.y - node.y) * flowProgress;
             
             ctx.beginPath();
-            ctx.arc(flowX, flowY, 1, 0, Math.PI * 2);
-            ctx.fillStyle = continentColors[node.continent] + '0.3)';
+            ctx.arc(flowX, flowY, 1.5, 0, Math.PI * 2);
+            ctx.fillStyle = node.color + '0.4)';
             ctx.fill();
           }
         });
 
-        // Draw subtle nodes
-        const baseSize = 2 + node.importance * 2;
-        const nodeSize = baseSize + node.pulse * 2 + (isHovered ? 2 : 0);
+        // Draw nodes
+        const nodeSize = node.size + node.pulse * 1.5 + (isHovered ? 2 : 0);
         
-        // Subtle outer glow
-        ctx.shadowBlur = 8 + node.pulse * 5 + node.importance * 3;
-        ctx.shadowColor = continentColors[node.continent] + '0.2)';
+        // Outer glow
+        ctx.shadowBlur = 10 + node.pulse * 5;
+        ctx.shadowColor = node.color + '0.3)';
         ctx.beginPath();
         ctx.arc(node.x, node.y, nodeSize, 0, Math.PI * 2);
-        ctx.fillStyle = continentColors[node.continent] + (0.15 + node.pulse * 0.1 + node.importance * 0.05) + ')';
+        ctx.fillStyle = node.color + (0.2 + node.pulse * 0.1) + ')';
         ctx.fill();
         
         // Inner core
         ctx.shadowBlur = 0;
         ctx.beginPath();
         ctx.arc(node.x, node.y, nodeSize * 0.4, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
         ctx.fill();
-
-        // Data type indicator (only on hover)
-        if (isHovered) {
-          ctx.font = 'bold 10px monospace';
-          ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-          ctx.textAlign = 'center';
-          ctx.fillText(node.name, node.x, node.y - nodeSize - 15);
-          ctx.font = '8px monospace';
-          ctx.fillStyle = continentColors[node.continent] + '0.7)';
-          ctx.fillText(`${node.type} Hub`, node.x, node.y - nodeSize - 5);
-        }
       });
 
       // Create and update data packets
@@ -339,11 +212,11 @@ const ParticleBackground = () => {
         }
 
         // Smooth interpolation
-        packet.x = packet.x + (packet.targetX - packet.x) * packet.speed * 15;
-        packet.y = packet.y + (packet.targetY - packet.y) * packet.speed * 15;
+        packet.x = packet.x + (packet.targetX - packet.x) * packet.speed * 10;
+        packet.y = packet.y + (packet.targetY - packet.y) * packet.speed * 10;
 
-        // Draw subtle packet
-        const alpha = (1 - packet.progress * 0.5) * 0.4;
+        // Draw packet
+        const alpha = (1 - packet.progress * 0.3) * 0.6;
         ctx.beginPath();
         ctx.arc(packet.x, packet.y, packet.size, 0, Math.PI * 2);
         ctx.fillStyle = packet.color + alpha + ')';
