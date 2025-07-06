@@ -30,7 +30,7 @@ const ParticleBackground = () => {
     }> = [];
 
     // Create random digital numbers
-    for (let i = 0; i < 25; i++) {
+    for (let i = 0; i < 60; i++) {
       digitalNumbers.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
