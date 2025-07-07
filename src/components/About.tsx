@@ -51,7 +51,7 @@ const About = () => {
                 <div className="w-64 h-64 mx-auto rounded-full overflow-hidden border-4 border-gradient-to-r from-blue-400 to-purple-400 p-1 transform transition-all duration-500 group-hover:scale-105 group-hover:rotate-2">
                   <div className="w-full h-full rounded-full overflow-hidden bg-gradient-to-br from-slate-800 to-slate-900">
                     <img 
-                      src="/data-workshop/avinash.jpg" 
+                      src={`${import.meta.env.BASE_URL}avinash.jpg`} 
                       alt="Avinash Patnaik - Data Scientist" 
                       className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
                     />
