@@ -101,7 +101,7 @@ const About = () => {
               always looking for new ways to apply intelligent solutions to real-world challenges.
             </p>
             <div className="flex flex-wrap gap-3">
-              {['Python', 'SQL', 'Machine Learning', 'Deep Learning', 'Microsoft Power BI', 'Tableau'].map((skill) => (
+              {['Python', 'SQL', 'NLP','Machine Learning', 'Deep Learning', 'Microsoft Power BI', 'Tableau'].map((skill) => (
                 <span 
                   key={skill}
                   className="px-4 py-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full text-blue-300 border border-blue-500/30 transform transition-all duration-300 hover:scale-110 hover:bg-gradient-to-r hover:from-blue-500/30 hover:to-purple-500/30 hover:text-blue-200 hover:border-blue-400/50 cursor-pointer"
