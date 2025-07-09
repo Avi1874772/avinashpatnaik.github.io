@@ -10,42 +10,65 @@ interface CodeLine {
 }
 
 const leftCode = [
-  "import pandas as pd",
-  "import numpy as np",
+  "from fastapi import fastapi, request",
+  "from pydantic import baseModel",
+  "from portfolio.models import project, blog",
+  "from sklearn.feature_extraction.text import tficfvectorizer",
+  "from sklearn.metrics.pairwise import cosine_similarity",
   "",
-  "df = pd.read_csv('data.csv')",
-  "df.dropna(inplace=True)",
+  "app = fastapi()",
   "",
-  "from sklearn.linear_model import LogisticRegression",
-  "model = LogisticRegression()",
-  "model.fit(X_train, y_train)",
+  "class userquery(baseModel):",
+  "    message: str",
   "",
-  "print(model.score(X_test, y_test))",
-  "# Evaluation complete"
+  "@app.post('/api/query')",
+  "async def handle_query(data: userquery):",
+  "    projects = project.get_all()",
+  "    texts = [p.description for p in projects]",
+  "    vectorizer = tficfvectorizer()",
+  "    matrix = vectorizer.fit_transform(texts)",
+  "    query_vec = vectorizer.transform([data.message])",
+  "    scores = cosine_similarity(query_vec, matrix).flatten()",
+  "    top_idx = scores.argmax()",
+  "    return { 'match': projects[top_idx].title }",
+  "",
+  "@app.get('/')",
+  "def homepage():",
+  "    return { 'message': 'WELCOME TO AVI\'S PORTFOLIO' }"
 ];
 
 const rightCode = [
-  "SELECT id, name",
-  "FROM users",
-  "WHERE active = true;",
+  "SELECT id, title, description",
+  "FROM projects",
+  "WHERE visibility = 'PUBLIC'",
+  "ORDER BY created_at DESC;",
   "",
-  "-- Total sales by region",
-  "SELECT region, SUM(amount)",
-  "FROM sales",
-  "GROUP BY region;",
+  "INSERT INTO page_visits(user_ip, visited_at)",
+  "VALUES ('192.168.1.1', CURRENT_TIMESTAMP);",
   "",
-  "-- Top performing products",
-  "SELECT product_id, AVG(rating)",
-  "FROM reviews",
-  "GROUP BY product_id",
-  "ORDER BY AVG(rating) DESC;"
+  "SELECT COUNT(*) FROM page_visits",
+  "WHERE visited_at > CURRENT_DATE - INTERVAL '7 days';",
+  "",
+  "SELECT blog.id, blog.title, COUNT(comments.id) AS comment_count",
+  "FROM blog",
+  "LEFT JOIN comments ON blog.id = comments.blog_id",
+  "GROUP BY blog.id, blog.title",
+  "ORDER BY comment_count DESC;",
+  "",
+  "SELECT p.title, ARRAY_AGG(s.name) AS skills",
+  "FROM project_skills ps",
+  "JOIN skills s ON s.id = ps.skill_id",
+  "JOIN projects p ON p.id = ps.project_id",
+  "GROUP BY p.title;",
+  "",
+  "UPDATE users SET last_login = NOW()",
+  "WHERE id = 1;"
 ];
 
 const ParticleBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    // Dynamically load Source Code Pro font
     const link = document.createElement('link');
     link.href = 'https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap';
     link.rel = 'stylesheet';
@@ -71,17 +94,17 @@ const ParticleBackground = () => {
 
     const lines: CodeLine[] = [];
     const padding = 40;
-    const lineHeight = 28;
-    const fontSize = 15;
+    const lineHeight = 20;
+    const fontSize = 12;
     const leftStartX = padding;
-    const rightStartX = canvas.width - 420;
+    const rightStartX = canvas.width - 300; // SQL pushed further right
 
     const maxLines = Math.max(leftCode.length, rightCode.length);
 
     for (let i = 0; i < maxLines; i++) {
       if (i < leftCode.length) {
         lines.push({
-          fullText: leftCode[i],
+          fullText: leftCode[i].toUpperCase(),
           typedText: '',
           x: leftStartX,
           y: padding + i * lineHeight,
@@ -91,7 +114,7 @@ const ParticleBackground = () => {
       }
       if (i < rightCode.length) {
         lines.push({
-          fullText: rightCode[i],
+          fullText: rightCode[i].toUpperCase(),
           typedText: '',
           x: rightStartX,
           y: padding + i * lineHeight,
@@ -108,24 +131,26 @@ const ParticleBackground = () => {
       cursorVisible = !cursorVisible;
     }, 600);
 
-    const typeInterval = 80;
+    const typeInterval = 30;
     let lastTime = 0;
 
-    // Function to draw glowing text with layered shadows
-    const drawGlowingText = (text: string, x: number, y: number) => {
-      ctx.shadowColor = 'rgba(0, 255, 140, 0.15)';
-      ctx.shadowBlur = 10;
-      ctx.fillStyle = 'rgba(0, 255, 140, 0.15)';
+    // Reduced brightness & contrast glowing text
+    const drawGlowingText = (text: string, x: number, y: number, opacity: number) => {
+      const baseColor = `rgba(0, 255, 140, ${0.2 * opacity})`;
+
+      ctx.shadowColor = `rgba(0, 255, 140, ${0.03 * opacity})`;
+      ctx.shadowBlur = 3;
+      ctx.fillStyle = baseColor;
       ctx.fillText(text, x, y);
 
-      ctx.shadowColor = 'rgba(0, 255, 140, 0.4)';
-      ctx.shadowBlur = 20;
-      ctx.fillStyle = 'rgba(0, 255, 140, 0.4)';
+      ctx.shadowColor = `rgba(0, 255, 140, ${0.1 * opacity})`;
+      ctx.shadowBlur = 6;
+      ctx.fillStyle = baseColor;
       ctx.fillText(text, x, y);
 
-      ctx.shadowColor = 'rgba(0, 255, 140, 1)';
-      ctx.shadowBlur = 30;
-      ctx.fillStyle = 'rgba(0, 255, 140, 1)';
+      ctx.shadowColor = `rgba(0, 255, 140, ${0.3 * opacity})`;
+      ctx.shadowBlur = 12;
+      ctx.fillStyle = baseColor;
       ctx.fillText(text, x, y);
 
       ctx.shadowBlur = 0;
@@ -136,7 +161,7 @@ const ParticleBackground = () => {
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Darker background with central shading
+      // Softer dark radial background gradient
       const gradient = ctx.createRadialGradient(
         canvas.width / 2,
         canvas.height / 2,
@@ -146,7 +171,7 @@ const ParticleBackground = () => {
         Math.max(canvas.width, canvas.height) / 1.5
       );
       gradient.addColorStop(0, '#000000');
-      gradient.addColorStop(0.2, '#021f1f');
+      gradient.addColorStop(0.2, '#031f1f');
       gradient.addColorStop(1, '#000000');
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -169,12 +194,25 @@ const ParticleBackground = () => {
         lastTime = time;
       }
 
+      // Center fade zone between 40% - 60% width
+      const centerStart = canvas.width * 0.4;
+      const centerEnd = canvas.width * 0.6;
+
       lines.forEach((line) => {
-        drawGlowingText(line.typedText, line.x, line.y);
+        // Calculate opacity fade if line x is inside the center zone
+        const midX = line.x;
+        let opacity = 1.0;
+
+        if (midX > centerStart && midX < centerEnd) {
+          const distToCenter = Math.abs(midX - canvas.width / 2);
+          opacity = Math.max(0.15, 1 - distToCenter / (canvas.width * 0.1));
+        }
+
+        drawGlowingText(line.typedText, line.x, line.y, opacity);
 
         if (line.isCurrentLine && line.charIndex < line.fullText.length && cursorVisible) {
           const cursorX = line.x + ctx.measureText(line.typedText).width;
-          drawGlowingText('|', cursorX, line.y);
+          drawGlowingText('|', cursorX, line.y, opacity);
         }
       });
 
