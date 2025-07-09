@@ -34,7 +34,7 @@ const leftCode = [
   "",
   "@app.get('/')",
   "def homepage():",
-  "    return { 'message': 'WELCOME TO AVI\'S PORTFOLIO' }"
+  "    return { 'message': 'WELCOME TO AVI'S PORTFOLIO' }"
 ];
 
 const rightCode = [
