@@ -1,7 +1,59 @@
 import React, { useEffect, useRef } from 'react';
 
+interface CodeLine {
+  fullText: string;
+  typedText: string;
+  x: number;
+  y: number;
+  charIndex: number;
+  isCurrentLine: boolean;
+}
+
+const leftCode = [
+  "import pandas as pd",
+  "import numpy as np",
+  "",
+  "df = pd.read_csv('data.csv')",
+  "df.dropna(inplace=True)",
+  "",
+  "from sklearn.linear_model import LogisticRegression",
+  "model = LogisticRegression()",
+  "model.fit(X_train, y_train)",
+  "",
+  "print(model.score(X_test, y_test))",
+  "# Evaluation complete"
+];
+
+const rightCode = [
+  "SELECT id, name",
+  "FROM users",
+  "WHERE active = true;",
+  "",
+  "-- Total sales by region",
+  "SELECT region, SUM(amount)",
+  "FROM sales",
+  "GROUP BY region;",
+  "",
+  "-- Top performing products",
+  "SELECT product_id, AVG(rating)",
+  "FROM reviews",
+  "GROUP BY product_id",
+  "ORDER BY AVG(rating) DESC;"
+];
+
 const ParticleBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    // Dynamically load Source Code Pro font
+    const link = document.createElement('link');
+    link.href = 'https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap';
+    link.rel = 'stylesheet';
+    document.head.appendChild(link);
+    return () => {
+      document.head.removeChild(link);
+    };
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -14,107 +66,125 @@ const ParticleBackground = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     };
-
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Digital numbers (1s and 0s) for signals
-    const digitalNumbers: Array<{
-      x: number;
-      y: number;
-      value: string;
-      opacity: number;
-      fadeDirection: number;
-      color: string;
-      size: number;
-    }> = [];
+    const lines: CodeLine[] = [];
+    const padding = 40;
+    const lineHeight = 28;
+    const fontSize = 15;
+    const leftStartX = padding;
+    const rightStartX = canvas.width - 420;
 
-    // Create random digital numbers
-    for (let i = 0; i < 60; i++) {
-      digitalNumbers.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        value: Math.random() > 0.5 ? '1' : '0',
-        opacity: Math.random(),
-        fadeDirection: Math.random() > 0.5 ? 1 : -1,
-        color: ['rgba(59, 130, 246, ', 'rgba(168, 85, 247, ', 'rgba(34, 197, 94, '][Math.floor(Math.random() * 3)],
-        size: 12 + Math.random() * 8
-      });
+    const maxLines = Math.max(leftCode.length, rightCode.length);
+
+    for (let i = 0; i < maxLines; i++) {
+      if (i < leftCode.length) {
+        lines.push({
+          fullText: leftCode[i],
+          typedText: '',
+          x: leftStartX,
+          y: padding + i * lineHeight,
+          charIndex: 0,
+          isCurrentLine: i === 0
+        });
+      }
+      if (i < rightCode.length) {
+        lines.push({
+          fullText: rightCode[i],
+          typedText: '',
+          x: rightStartX,
+          y: padding + i * lineHeight,
+          charIndex: 0,
+          isCurrentLine: i === 0 && leftCode.length === 0
+        });
+      }
     }
 
-    let time = 0;
-    let mouseX = 0;
-    let mouseY = 0;
+    let currentLine = 0;
+    let cursorVisible = true;
 
-    const handleMouseMove = (e: MouseEvent) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
+    setInterval(() => {
+      cursorVisible = !cursorVisible;
+    }, 600);
+
+    const typeInterval = 80;
+    let lastTime = 0;
+
+    // Function to draw glowing text with layered shadows
+    const drawGlowingText = (text: string, x: number, y: number) => {
+      ctx.shadowColor = 'rgba(0, 255, 140, 0.15)';
+      ctx.shadowBlur = 10;
+      ctx.fillStyle = 'rgba(0, 255, 140, 0.15)';
+      ctx.fillText(text, x, y);
+
+      ctx.shadowColor = 'rgba(0, 255, 140, 0.4)';
+      ctx.shadowBlur = 20;
+      ctx.fillStyle = 'rgba(0, 255, 140, 0.4)';
+      ctx.fillText(text, x, y);
+
+      ctx.shadowColor = 'rgba(0, 255, 140, 1)';
+      ctx.shadowBlur = 30;
+      ctx.fillStyle = 'rgba(0, 255, 140, 1)';
+      ctx.fillText(text, x, y);
+
+      ctx.shadowBlur = 0;
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    const draw = (time: number) => {
+      if (!ctx) return;
 
-    const animate = () => {
-      time += 0.01;
-      
-      // Clear with dark background
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.1)';
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Darker background with central shading
+      const gradient = ctx.createRadialGradient(
+        canvas.width / 2,
+        canvas.height / 2,
+        0,
+        canvas.width / 2,
+        canvas.height / 2,
+        Math.max(canvas.width, canvas.height) / 1.5
+      );
+      gradient.addColorStop(0, '#000000');
+      gradient.addColorStop(0.2, '#021f1f');
+      gradient.addColorStop(1, '#000000');
+      ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Update and draw digital numbers
-      digitalNumbers.forEach((number, index) => {
-        // Update opacity for blinking effect
-        number.opacity += number.fadeDirection * 0.02;
-        
-        if (number.opacity <= 0) {
-          number.opacity = 0;
-          number.fadeDirection = 1;
-          // Change value randomly when fading in
-          if (Math.random() < 0.3) {
-            number.value = Math.random() > 0.5 ? '1' : '0';
+      ctx.font = `${fontSize}px 'Source Code Pro', monospace`;
+      ctx.textBaseline = 'top';
+
+      if (time - lastTime > typeInterval) {
+        const line = lines[currentLine];
+        if (line && line.charIndex < line.fullText.length) {
+          line.typedText += line.fullText[line.charIndex];
+          line.charIndex++;
+        } else {
+          if (line) line.isCurrentLine = false;
+          currentLine++;
+          if (currentLine < lines.length) {
+            lines[currentLine].isCurrentLine = true;
           }
-        } else if (number.opacity >= 1) {
-          number.opacity = 1;
-          number.fadeDirection = -1;
         }
+        lastTime = time;
+      }
 
-        // Occasionally change position
-        if (Math.random() < 0.001) {
-          number.x = Math.random() * canvas.width;
-          number.y = Math.random() * canvas.height;
-        }
+      lines.forEach((line) => {
+        drawGlowingText(line.typedText, line.x, line.y);
 
-        // Mouse interaction - brighten nearby numbers
-        const dx = mouseX - number.x;
-        const dy = mouseY - number.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        const mouseEffect = distance < 100 ? (100 - distance) / 100 * 0.5 : 0;
-
-        // Draw digital number
-        ctx.font = `${number.size}px 'Courier New', monospace`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        
-        const finalOpacity = Math.min(1, number.opacity + mouseEffect);
-        ctx.fillStyle = number.color + finalOpacity + ')';
-        ctx.fillText(number.value, number.x, number.y);
-
-        // Add subtle glow effect
-        if (finalOpacity > 0.5) {
-          ctx.shadowBlur = 5;
-          ctx.shadowColor = number.color + '0.3)';
-          ctx.fillText(number.value, number.x, number.y);
-          ctx.shadowBlur = 0;
+        if (line.isCurrentLine && line.charIndex < line.fullText.length && cursorVisible) {
+          const cursorX = line.x + ctx.measureText(line.typedText).width;
+          drawGlowingText('|', cursorX, line.y);
         }
       });
 
-      requestAnimationFrame(animate);
+      requestAnimationFrame(draw);
     };
 
-    animate();
+    requestAnimationFrame(draw);
 
     return () => {
       window.removeEventListener('resize', resizeCanvas);
-      window.removeEventListener('mousemove', handleMouseMove);
     };
   }, []);
 
